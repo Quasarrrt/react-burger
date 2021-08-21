@@ -1,7 +1,7 @@
 import React from 'react';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-
 import cardStyles  from './Card.module.css'
+import {cardPropTypes} from "../../propTypes/propTypes";
 
 
 const Card = ({card}) => {
@@ -18,6 +18,10 @@ const Card = ({card}) => {
                     <p className={["text text_type_main-default",cardStyles.name].join(' ')}>{card.name}</p>
                 </div>
     );
+};
+
+Card.propTypes = {
+    card: cardPropTypes.isRequired
 };
 
 export default Card;
