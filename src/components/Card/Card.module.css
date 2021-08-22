@@ -1,0 +1,26 @@
+.card {
+    position: relative;
+    width: 272px;
+}
+
+.counter {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.price  {
+    display: flex;
+    justify-content: center;
+
+}
+.priceNum {
+    margin: 0;
+}
+.name {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    height: 48px;
+    margin: 0;
+
+}
