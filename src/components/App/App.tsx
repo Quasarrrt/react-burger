@@ -1,10 +1,10 @@
 import React from 'react';
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import mainStyles from "./App.module.css"
-
+import Modal from "../Modal/Modal";
 
 function App() {
     const api="https://norma.nomoreparties.space/api/ingredients"
@@ -15,7 +15,7 @@ function App() {
         data: []
 
     });
-
+    const [isOpen, setIsOpen] = useState(false)
     useEffect(()=>{
         getMenu();
     },[])
@@ -34,13 +34,19 @@ function App() {
             });
     };
 
+
     return (
         <>
             <AppHeader/>
             <main className={mainStyles.main}>
                 <BurgerIngredients data={state.data} />
                 <BurgerConstructor items={state.data} isLoading={state.isLoading}/>
+
+                <Modal open={true} onClose={() => setIsOpen(false)}>
+                    Fancy Modal
+                </Modal>
             </main>
+
         </>
 
 
