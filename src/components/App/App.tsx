@@ -6,6 +6,7 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import mainStyles from "./App.module.css"
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import OrderDatails from "../OrderDetails/OrderDatails";
 
 function App() {
     const api="https://norma.nomoreparties.space/api/ingredients"
@@ -36,20 +37,29 @@ function App() {
             });
     };
     const [cardInModal, setCardInModal]=useState({})
-    const handleOpenModal=(card:any)=>{
+    const handleOpenModal = (card:any) => {
         setIsOpen(true);
         setCardInModal(card);
     }
-
+    const [isOrderModal, setIsOrderModal]=useState(false)
+    const handleOpenOrder = () => {
+        setIsOrderModal(true);
+        setIsOpen(true);
+    }
+    const handleCloseModal = () => {
+        setIsOpen(false);
+        setIsOrderModal(false);
+    }
     return (
         <>
             <AppHeader/>
             <main className={mainStyles.main}>
                 <BurgerIngredients data={state.data}  onIngredientClick={handleOpenModal}/>
-                <BurgerConstructor items={state.data} isLoading={state.isLoading} onClick={() => setIsOpen(true)}/>
-                <Modal open={isOpen} onClose={() => setIsOpen(false)}>
-                    <IngredientDetails card={cardInModal}/>
+                <BurgerConstructor items={state.data} isLoading={state.isLoading} onClick={handleOpenOrder}/>
+                <Modal open={isOpen} onClose={handleCloseModal} isOrderModal={isOrderModal}>
+                    {isOrderModal ? <OrderDatails/> : <IngredientDetails card={cardInModal}/> }
                 </Modal>
+
             </main>
 
         </>

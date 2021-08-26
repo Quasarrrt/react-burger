@@ -7,7 +7,7 @@ import {useEffect} from "react";
 import PropTypes from "prop-types";
 
 
-function Modal({ open, children, onClose }) {
+function Modal({ open, children, onClose, isOrderModal }) {
     const onKeydown = (event) => {
         if(event.key === 'Escape'){
             onClose()
@@ -26,7 +26,7 @@ function Modal({ open, children, onClose }) {
             <div className={["pr-10 pl-10 pt-10", modalStyles.modalHeader].join(' ')}>
                 <div className={modalStyles.modalHeaderWrapper}>
                     <h2 className={["text text_type_main-large", modalStyles.headerText].join(' ')}>
-                    Детали ингредиента
+                        {isOrderModal ? "" : ("Детали ингредиента")}
                     </h2>
                     <button onClick={onClose} className={modalStyles.button}>
                         <CloseIcon type="primary" />
@@ -43,6 +43,8 @@ Modal.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
+    isOrderModal: PropTypes.bool.isRequired,
+
 };
 
 export default Modal;

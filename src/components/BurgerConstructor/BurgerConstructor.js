@@ -73,6 +73,7 @@ const bunElem=items[0];
 BurgerConstructor.propTypes = {
     items: PropTypes.arrayOf(cardPropTypes.isRequired).isRequired,
     isLoading: PropTypes.bool.isRequired,
+    onClick: PropTypes.func.isRequired,
 
 };
 
