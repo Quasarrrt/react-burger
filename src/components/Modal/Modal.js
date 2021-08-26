@@ -1,38 +1,48 @@
 import React from 'react'
 import ReactDom from 'react-dom'
+import modalStyles from './Modal.module.css'
+import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import ModalOverlay from "../ModalOverlay/ModalOverlay";
+import {useEffect} from "react";
+import PropTypes from "prop-types";
 
-const MODAL_STYLES = {
-    position: 'fixed',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    backgroundColor: '#FFF',
-    padding: '50px',
-    zIndex: 1000
-}
 
-const OVERLAY_STYLES = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, .7)',
-    zIndex: 1000
-}
-
- function Modal({ open, children, onClose }) {
+function Modal({ open, children, onClose }) {
+    const onKeydown = (event) => {
+        if(event.key === 'Escape'){
+            onClose()
+        }
+    }
+     useEffect(() => {
+         document.addEventListener('keydown', onKeydown)
+         return () => document.removeEventListener('keydown', onKeydown)
+     })
     if (!open) return null
 
     return ReactDom.createPortal(
         <>
-            <div style={OVERLAY_STYLES} />
-            <div style={MODAL_STYLES}>
-                <button onClick={onClose}>Close Modal</button>
+
+            <ModalOverlay onClose={onClose}/>
+            <div className={["pr-10 pl-10 pt-10", modalStyles.modalHeader].join(' ')}>
+                <div className={modalStyles.modalHeaderWrapper}>
+                    <h2 className={["text text_type_main-large", modalStyles.headerText].join(' ')}>
+                    Детали ингредиента
+                    </h2>
+                    <button onClick={onClose} className={modalStyles.button}>
+                        <CloseIcon type="primary" />
+                    </button>
+                </div>
                 {children}
             </div>
         </>,
         document.getElementById('portal')
     )
 }
+
+Modal.propTypes = {
+    open: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired,
+};
+
 export default Modal;

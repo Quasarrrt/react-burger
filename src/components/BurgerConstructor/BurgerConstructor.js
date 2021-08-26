@@ -4,7 +4,7 @@ import constructorStyles from './BurgerConstructor.module.css';
 import PropTypes from 'prop-types';
 import {cardPropTypes} from "../../propTypes/propTypes";
 
-const BurgerConstructor = ({items, isLoading}) => {
+const BurgerConstructor = ({items, isLoading, onClick}) => {
 const bunElem=items[0];
     return (
         <>
@@ -58,7 +58,7 @@ const bunElem=items[0];
                             <p className="text text_type_digits-medium">610</p>
                             <CurrencyIcon type="primary"/>
                         </div>
-                        <Button type="primary" size="large">
+                        <Button type="primary" size="large" onClick={onClick}>
                             Оформить заказ
                         </Button>
                     </div>

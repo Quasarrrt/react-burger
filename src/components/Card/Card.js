@@ -4,9 +4,9 @@ import cardStyles  from './Card.module.css'
 import {cardPropTypes} from "../../propTypes/propTypes";
 
 
-const Card = ({card}) => {
+const Card = ({card, onClick}) => {
     return (
-                <div className={["mr-2 ml-4 mt-6 mb-10",cardStyles.card].join(' ')}>
+                <div className={["mr-2 ml-4 mt-6 mb-10",cardStyles.card].join(' ')} onClick={()=>{onClick(card)}}>
                     <div className={cardStyles.counter}>
                         <Counter count={1} size="default" />
                     </div>
