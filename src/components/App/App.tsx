@@ -26,7 +26,12 @@ function App() {
     const getMenu = () => {
         setState({ ...state, hasError: false, isLoading: true });
         fetch(api)
-            .then(res => res.json())
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(`Ошибка ${res.status}`);
+            })
             .then(data =>{
 
                 setState({ ...state, data: data.data, isLoading: false })
@@ -50,13 +55,14 @@ function App() {
         setIsOpen(false);
         setIsOrderModal(false);
     }
+
     return (
         <>
             <AppHeader/>
             <main className={mainStyles.main}>
                 <BurgerIngredients data={state.data}  onIngredientClick={handleOpenModal}/>
                 <BurgerConstructor items={state.data} isLoading={state.isLoading} onClick={handleOpenOrder}/>
-                <Modal open={isOpen} onClose={handleCloseModal} isOrderModal={isOrderModal}>
+                <Modal open={isOpen} onClose={handleCloseModal}  title={isOrderModal ? "" : "Детали ингредиента"} >
                     {isOrderModal ? <OrderDatails/> : <IngredientDetails card={cardInModal}/> }
                 </Modal>
 
