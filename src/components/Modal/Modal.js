@@ -7,7 +7,7 @@ import {useEffect} from "react";
 import PropTypes from "prop-types";
 
 
-function Modal({ open, children, onClose, isOrderModal, title }) {
+function Modal({ open, children, onClose, title }) {
     const onKeydown = (event) => {
         if(event.key === 'Escape'){
             onClose()
@@ -43,7 +43,6 @@ Modal.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
-    isOrderModal: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
 };
 
