@@ -1,0 +1,44 @@
+.modalHeader {
+
+    width: 720px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1C1C21;
+    z-index: 1000;
+    border: 1px solid rgba(76, 76, 255, 0.2);
+    border-radius: 40px;
+}
+.modalHeaderWrapper{
+    display: flex;
+    width: 640px;
+    height: 64px;
+    align-items: center;
+}
+.headerText{
+    width: 580px;
+
+}
+
+.button{
+    background: none;
+    border: none;
+    padding: 0;
+    padding-left: 36px;
+    justify-content: flex-end;
+}
+.button:focus{
+    outline: none;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, .7);
+   z-index: 1000;
+}

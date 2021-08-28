@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import {cardPropTypes} from "../../propTypes/propTypes";
 
 
-const BurgerIngredients = ({data}) => {
+const BurgerIngredients = ({data, onIngredientClick}) => {
     const [current, setCurrent] = React.useState('one')
     return (
         <section className={["mr-10",burgerIngredientsStyles.section].join(' ')}>
@@ -35,7 +35,7 @@ const BurgerIngredients = ({data}) => {
                     <div className={burgerIngredientsStyles.cards}>
                         {data.map((card) => {
                                 if (card.type === "bun") {
-                                    return <Card card={card} key={card._id}  />
+                                    return <Card card={card} key={card._id} onClick={onIngredientClick}   />
                                 }
                             }
                         )}
@@ -48,7 +48,7 @@ const BurgerIngredients = ({data}) => {
                     <div className={burgerIngredientsStyles.cards}>
                         {data.map((card) => {
                             if (card.type === "sauce") {
-                                return <Card card={card} key={card._id}/>
+                                return <Card card={card} key={card._id} onClick={onIngredientClick}/>
                             }
                         })}
                     </div>
@@ -60,7 +60,7 @@ const BurgerIngredients = ({data}) => {
                     <div className={burgerIngredientsStyles.cards}>
                         {data.map((card) => {
                             if (card.type === "main") {
-                                return <Card card={card} key={card._id}/>
+                                return <Card card={card} key={card._id} onClick={onIngredientClick}/>
                             }
                         }
                     )}
@@ -73,7 +73,8 @@ const BurgerIngredients = ({data}) => {
     );
 };
 BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(cardPropTypes.isRequired).isRequired
+    data: PropTypes.arrayOf(cardPropTypes.isRequired).isRequired,
+    onIngredientClick: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredients;

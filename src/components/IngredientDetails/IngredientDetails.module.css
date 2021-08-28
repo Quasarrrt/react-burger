@@ -1,0 +1,34 @@
+.ingredientContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.image {
+    width: 480px;
+
+}
+.title {
+    text-align: center;
+    width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.list {
+    display: flex;
+    list-style-type: none;
+    justify-content: center;
+    padding: 0;
+    color: #8585AD;
+}
+
+.calories {
+    display: flex;
+   flex-direction: column;
+    width: 117px;
+    text-align: center;
+
+}
+
+.caloriesNum {
+    margin-bottom: 0;
+}
