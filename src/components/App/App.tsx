@@ -6,7 +6,7 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import mainStyles from "./App.module.css"
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import OrderDatails from "../OrderDetails/OrderDatails";
+import OrderDetails from "../OrderDetails/OrderDetails";
 
 function App() {
     const api="https://norma.nomoreparties.space/api/ingredients"
@@ -63,7 +63,7 @@ function App() {
                 <BurgerIngredients data={state.data}  onIngredientClick={handleOpenModal}/>
                 <BurgerConstructor items={state.data} isLoading={state.isLoading} onClick={handleOpenOrder}/>
                 <Modal open={isOpen} onClose={handleCloseModal}  title={isOrderModal ? "" : "Детали ингредиента"} >
-                    {isOrderModal ? <OrderDatails/> : <IngredientDetails card={cardInModal}/> }
+                    {isOrderModal ? <OrderDetails/> : <IngredientDetails card={cardInModal}/> }
                 </Modal>
 
             </main>
