@@ -6,12 +6,12 @@ export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
 export const SET_ORDER_ERROR='SET_ORDER_ERROR';
 
 
-export function getOrderNum() {
+export function getOrderNum(data) {
     return function(dispatch) {
         dispatch({
             type: 'GET_ORDER_REQUEST'
         });
-        orderRequest()
+        orderRequest(data)
             .then(res => {
                 if (res.ok) {
                     return res.json();

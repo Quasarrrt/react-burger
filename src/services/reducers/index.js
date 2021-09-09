@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
     allIngredients: allIngredientsReducer,
-    //constructorIngredients: constructorIngredientsReducer,
+    constructorIngredients: constructorIngredientsReducer,
     viewedIngredient: viewedIngredientReducer,
     order: orderReducer,
 });

@@ -1,6 +1,7 @@
 import { GET_ORDER_FAILED, GET_ORDER_REQUEST, GET_ORDER_SUCCESS, SET_ORDER_ERROR} from "../actions/order";
 import {ADD_VIEWED_INGREDIENT_DATA, REMOVE_VIEWED_INGREDIENT_DATA} from "../actions/viewedIngredient";
 import {GET_INGREDIENTS_FAILED, GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_SUCCESS} from "../actions/allIngredients";
+import {MOVE_CONSTRUCTOR_INGREDIENTS, ADD_CONSTRUCTOR_INGREDIENTS, DELETE_CONSTRUCTOR_INGREDIENTS} from "../actions/constructorIngredients";
 
 const initialStateAllIngredients= {
     allIngredients: [],
@@ -9,13 +10,15 @@ const initialStateAllIngredients= {
 }
 const initialStateConstructorIngredients={
    constructorIngredients: [],
-    isBun: null,
+    isBun: {},
+    total: 0,
 }
 const initialStateViewedIngredient = {
     currentIngredient: {},
 };
 const initialStateOrder={
     order: {},
+    number: {},
     orderRequest: false,
     orderFailed: false,
 };
@@ -32,7 +35,7 @@ export const allIngredientsReducer = (state = initialStateAllIngredients, action
             return {
                 ...state,
                 ingredientsFailed: false,
-                ingredients: action.payload,
+                allIngredients: action.items,
                 ingredientsRequest: false,
             };
         }
@@ -50,9 +53,44 @@ export const allIngredientsReducer = (state = initialStateAllIngredients, action
 }
 
 
-{/*export const constructorIngredientsReducer = (state = initialStateConstructorIngredients, action) => {
+export const constructorIngredientsReducer = (state = initialStateConstructorIngredients, action) => {
+    switch (action.type) {
+        case ADD_CONSTRUCTOR_INGREDIENTS: {
+            if (action.payload.type === 'bun') {
+                return {
+                        ...state,
+                        isBun: action.payload,
+                    };
+                }
+            return {
+                ...state,
+                constructorIngredients: [...state.constructorIngredients, {...action.payload, uniqueId: action.uniqueId}]
+                };
+        }
+        case DELETE_CONSTRUCTOR_INGREDIENTS: {
+                return {
+                    ...state,
+                    constructorIngredients: [...state.constructorIngredients].filter((item) => item.uniqueId !== action.uniqueId)
+                }
+        }
+        case MOVE_CONSTRUCTOR_INGREDIENTS: {
+            const {dragIndex, hoverIndex} = action.payload;
+            const ingredients = [...state.constructorIngredients];
+            ingredients.splice(dragIndex, 0, ingredients.splice(hoverIndex, 1)[0]);
+            return {
+                ...state,
+                constructorIngredients: ingredients,
+            };
+        }
 
-}*/}
+
+        default: {
+            return {
+                ...state,
+            };
+        }
+    }
+}
 
 
 export const viewedIngredientReducer = (state = initialStateViewedIngredient, action) => {
@@ -90,6 +128,7 @@ export const orderReducer = (state = initialStateOrder, action) => {
                 ...state,
                 orderFailed: false,
                 order: action.payload,
+                number: action.payload.order.number,
                 orderRequest: false,
             };
         }

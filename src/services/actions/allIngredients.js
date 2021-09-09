@@ -19,7 +19,7 @@ export function getIndgredients() {
             .then(data =>{
                 dispatch({
                     type: GET_INGREDIENTS_SUCCESS,
-                    items: data.data
+                    items: data.data,
                 });
             } )
             .catch(e => {

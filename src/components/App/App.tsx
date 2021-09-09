@@ -7,19 +7,23 @@ import mainStyles from "./App.module.css"
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import OrderDetails from "../OrderDetails/OrderDetails";
+import {useDispatch, useSelector} from "react-redux";
+import {getIndgredients} from "../../services/actions/allIngredients";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import {getOrderNum} from "../../services/actions/order";
 
 function App() {
-    const api="https://norma.nomoreparties.space/api/ingredients"
 
-    const [state, setState] = React.useState( {
+    /*const [state, setState] = React.useState( {
         isLoading: false,
         hasError: false,
         data: []
 
     });
-    const [isOpen, setIsOpen] = useState(false)
 
-    useEffect(()=>{
+
+     useEffect(()=>{
         getMenu();
     },[])
 
@@ -40,13 +44,14 @@ function App() {
                 setState({ ...state, hasError: true, isLoading: false });
                 console.log(e)
             });
-    };
+    };*/
     const [cardInModal, setCardInModal]=useState({})
-    const handleOpenModal = (card:any) => {
+    const [isOpen, setIsOpen] = useState(false)
+    const handleOpenIngredientModal = () => {
         setIsOpen(true);
-        setCardInModal(card);
+
     }
-    const [isOrderModal, setIsOrderModal]=useState(false)
+    const [isOrderModal, setIsOrderModal ]=useState(false)
     const handleOpenOrder = () => {
         setIsOrderModal(true);
         setIsOpen(true);
@@ -55,15 +60,25 @@ function App() {
         setIsOpen(false);
         setIsOrderModal(false);
     }
+    const dispatch=useDispatch();
+    useEffect(
+        () => {
+            dispatch(getIndgredients());
+        },
+        [dispatch]
+    );
+
 
     return (
         <>
             <AppHeader/>
             <main className={mainStyles.main}>
-                <BurgerIngredients data={state.data}  onIngredientClick={handleOpenModal}/>
-                <BurgerConstructor items={state.data} isLoading={state.isLoading} onClick={handleOpenOrder}/>
+                <DndProvider backend={HTML5Backend}>
+                    <BurgerIngredients onCardClick={handleOpenIngredientModal} />
+                    <BurgerConstructor onOrderClick={handleOpenOrder}/>
+                </DndProvider>
                 <Modal open={isOpen} onClose={handleCloseModal}  title={isOrderModal ? "" : "Детали ингредиента"} >
-                    {isOrderModal ? <OrderDetails/> : <IngredientDetails card={cardInModal}/> }
+                    {isOrderModal ? <OrderDetails/> : <IngredientDetails/> }
                 </Modal>
 
             </main>

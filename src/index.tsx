@@ -14,7 +14,6 @@ declare global {
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose || compose;
 const enhancer = composeEnhancers(applyMiddleware(thunk));
 const store = createStore(rootReducer, enhancer);
-
 ReactDOM.render(
   <React.StrictMode>
       <Provider store={store}>
