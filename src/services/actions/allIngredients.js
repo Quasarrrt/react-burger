@@ -2,9 +2,9 @@ import {ingredientsRequest} from "../api/api";
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
-export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
+export const GET_INGREDIENTS_ERROR = 'GET_INGREDIENTS_ERROR';
 
-export function getIndgredients() {
+export function getIngredients() {
     return function(dispatch) {
         dispatch({
             type: GET_INGREDIENTS_REQUEST
@@ -16,17 +16,22 @@ export function getIndgredients() {
                 }
                 return Promise.reject(`Ошибка ${res.status}`);
             })
-            .then(data =>{
+            .then((res) => {
+                if (res && res.success) {
+                    dispatch({
+                        type: GET_INGREDIENTS_SUCCESS,
+                        allIngredients: res.data,
+                    });
+                } else {
+                    dispatch({
+                        type: GET_INGREDIENTS_ERROR,
+                    });
+                }
+            })
+            .catch((err) => {
                 dispatch({
-                    type: GET_INGREDIENTS_SUCCESS,
-                    items: data.data,
+                    type: GET_INGREDIENTS_ERROR,
                 });
-            } )
-            .catch(e => {
-                dispatch({
-                    type: GET_INGREDIENTS_FAILED
-                });
-                console.log(e)
             });
     };
 }

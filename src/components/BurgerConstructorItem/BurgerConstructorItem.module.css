@@ -1,0 +1,6 @@
+.itemWrapper {
+    min-width: 536px;
+}
+.itemWrapper div {
+    width: 100%;
+}

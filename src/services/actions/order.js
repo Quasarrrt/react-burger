@@ -1,42 +1,38 @@
-import {orderRequest} from "../api/api";
+import {getOrder} from "../api/api";
 
 export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
-export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
 export const SET_ORDER_ERROR='SET_ORDER_ERROR';
 
-
-export function getOrderNum(data) {
+export const getOrderNum=(orderItems) => {
     return function(dispatch) {
         dispatch({
-            type: 'GET_ORDER_REQUEST'
+            type: GET_ORDER_REQUEST,
         });
-        orderRequest(data)
+        getOrder(orderItems)
             .then(res => {
                 if (res.ok) {
                     return res.json();
                 }
                 return Promise.reject(`Ошибка ${res.status}`);
             })
-            .then(data =>{
+            .then((res) => {
+                if (res && res.success) {
+                    dispatch({
+                        type: GET_ORDER_SUCCESS,
+                        number: res.order.number,
+                    });
+
+                } else {
+                    dispatch({
+                        type: SET_ORDER_ERROR,
+                    });
+                }
+            })
+            .catch((err) => {
                 dispatch({
-                    type: GET_ORDER_SUCCESS,
-                    payload: data,
+                    type: SET_ORDER_ERROR,
                 });
-            } )
-            .catch(e => {
-                dispatch({
-                    type: GET_ORDER_FAILED,
-                });
-                console.log(e)
             });
-    };
-}
-export function orderError(data) {
-    return function(dispatch) {
-        dispatch({
-            type: SET_ORDER_ERROR,
-            payload: data,
-        });
     };
 }

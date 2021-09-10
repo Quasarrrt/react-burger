@@ -5,11 +5,12 @@ import {useSelector} from "react-redux";
 
 
 const OrderDetails = () => {
-    const orderNum = useSelector(state => state.order);
+    const orderNum = useSelector((store) => store.order.order.number);
+
     return (
         <div className={stylesOrderDetails.orderWrapper}>
             <div className={["mt-4 mb-8 text text_type_digits-large",stylesOrderDetails.orderNum].join('  ')}>
-                 {orderNum.number ? orderNum : ""}
+                 { orderNum }
             </div>
             <p className={["mb-15 text text_type_main-medium", stylesOrderDetails.order].join('  ')}>
                 идентификатор заказа

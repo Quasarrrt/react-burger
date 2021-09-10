@@ -8,12 +8,12 @@ import { useInView } from 'react-intersection-observer';
 
 const BurgerIngredients = ({onCardClick}) => {
     const [current, setCurrent] = React.useState('one')
-    const { ingredients, constructorIngredients, isBun } = useSelector(state => ({
-        ingredients: state.allIngredients,
+    const {  allIngredients,constructorIngredients, isBun } = useSelector((state) => ({
+        allIngredients: state.allIngredients.allIngredients,
         constructorIngredients: state.constructorIngredients.constructorIngredients,
         isBun: state.constructorIngredients.isBun,
     }));
-    const data=[...ingredients.allIngredients];
+    
     const [bunRef, inViewBuns] = useInView({ threshold: 0 });
     const [sauceRef, inViewSauces] = useInView({ threshold: 0 });
     const [mainRef, inViewMains] = useInView({ threshold: 0 });
@@ -33,24 +33,17 @@ const BurgerIngredients = ({onCardClick}) => {
         const item = document.getElementById(tab);
         if (item) item.scrollIntoView({ behavior: "smooth" });
     };
-
-    const countIngredients = useMemo(() => {
-        return data.map((element) => {
-            element.count = constructorIngredients.filter((item) => item._id === element._id).length;
-            if (isBun && isBun._id === element._id)
-                element.count += 2;
-            return element;
-        });
-    }, [data, constructorIngredients, isBun]);
-    const bun = countIngredients.filter((item) => {
+    const bun = allIngredients.filter((item) => {
         return item.type === "bun";
     });
-    const sauce = countIngredients.filter((item) => {
+    const sauce = allIngredients.filter((item) => {
         return item.type === "sauce";
     });
-    const main = countIngredients.filter((item) => {
+    const main = allIngredients.filter((item) => {
         return item.type === "main";
     });
+
+
     return (
         <section className={["mr-10",burgerIngredientsStyles.section].join(' ')}>
             <p className="text text_type_main-large pb-5 pt-10">
@@ -76,8 +69,8 @@ const BurgerIngredients = ({onCardClick}) => {
                         Булки
                         </p>
                         <div className={burgerIngredientsStyles.cards}>
-                        {bun.map((card) => {
-                            return <Card card={card} key={card._id} itemCount={card.count} onCardClick={onCardClick}   />
+                        {bun&&bun.map((card) => {
+                            return <Card card={card} key={card._id}  onCardClick={onCardClick}   />
                         }
                         )}
                         </div>
@@ -88,7 +81,7 @@ const BurgerIngredients = ({onCardClick}) => {
                         </p>
                         <div className={burgerIngredientsStyles.cards}>
                         {sauce.map((card) => {
-                            return <Card card={card} key={card._id} itemCount={card.count} onCardClick={onCardClick}/>
+                            return <Card card={card} key={card._id} onCardClick={onCardClick}/>
                             }
                         )}
                         </div>
@@ -99,7 +92,7 @@ const BurgerIngredients = ({onCardClick}) => {
                         </p>
                         <div className={burgerIngredientsStyles.cards}>
                         {main.map((card) => {
-                            return <Card card={card} key={card._id} itemCount={card.count} onCardClick={onCardClick}/>
+                            return <Card card={card} key={card._id}  onCardClick={onCardClick}/>
                         }
                     )}
                         </div>

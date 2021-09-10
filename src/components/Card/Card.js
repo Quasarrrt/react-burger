@@ -3,12 +3,24 @@ import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-com
 import cardStyles  from './Card.module.css'
 import {cardPropTypes} from "../../propTypes/propTypes";
 import PropTypes from "prop-types";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {ADD_VIEWED_INGREDIENT_DATA} from "../../services/actions/viewedIngredient";
 import {useDrag} from "react-dnd";
 
-const Card = ({card, onCardClick, itemCount}) => {
+
+const Card = ({card, onCardClick}) => {
     const dispatch=useDispatch();
+    const  {constructorIngredients, isBun}=useSelector((state)=>({
+        constructorIngredients: state.constructorIngredients.constructorIngredients,
+        isBun: state.constructorIngredients.isBun,
+    }))
+    const [{isDrag}, dragRef] = useDrag({
+        type: 'item',
+        item: card,
+        collect: monitor => ({
+            isDrag: monitor.isDragging()
+        })
+    });
     function handleClick() {
         dispatch({
             type: ADD_VIEWED_INGREDIENT_DATA,
@@ -17,17 +29,13 @@ const Card = ({card, onCardClick, itemCount}) => {
         onCardClick(card);
         return false;
     };
-    const [{isDrag}, dragRef] = useDrag({
-        type: 'dragIngredient',
-        item: card,
-        collect: monitor => ({
-            isDrag: monitor.isDragging()
-        })
-    });
+    const counter = card.type === 'bun' && isBun?._id === card._id ? 2 : card.type !== 'bun' ? constructorIngredients.filter(
+        item => item._id === card._id).length
+        : 0;
     return (
                 <div className={["mr-2 ml-4 mt-6 mb-10",cardStyles.card].join(' ')} onClick={handleClick} ref={dragRef}>
                     <div className={cardStyles.counter}>
-                        {itemCount && (itemCount > 0) ?  <Counter count={itemCount} size="default" /> : null}
+                        <Counter count={counter} size="default" />
                     </div>
                     <img src={card.image} alt={card.name} className={["pr-4 pl-4", cardStyles.pic].join(' ')} />
                     <div className={["pt-1 pb-1", cardStyles.price].join(' ')}>
@@ -40,7 +48,7 @@ const Card = ({card, onCardClick, itemCount}) => {
 };
 
 Card.propTypes = {
-    card: cardPropTypes.isRequired,
+   card: cardPropTypes.isRequired,
     onCardClick: PropTypes.func.isRequired,
 };
 

@@ -1,7 +1,7 @@
-import { GET_ORDER_FAILED, GET_ORDER_REQUEST, GET_ORDER_SUCCESS, SET_ORDER_ERROR} from "../actions/order";
+import { SET_ORDER_ERROR, GET_ORDER_REQUEST, GET_ORDER_SUCCESS} from "../actions/order";
 import {ADD_VIEWED_INGREDIENT_DATA, REMOVE_VIEWED_INGREDIENT_DATA} from "../actions/viewedIngredient";
-import {GET_INGREDIENTS_FAILED, GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_SUCCESS} from "../actions/allIngredients";
-import {MOVE_CONSTRUCTOR_INGREDIENTS, ADD_CONSTRUCTOR_INGREDIENTS, DELETE_CONSTRUCTOR_INGREDIENTS} from "../actions/constructorIngredients";
+import {GET_INGREDIENTS_ERROR, GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_SUCCESS} from "../actions/allIngredients";
+import {MOVE_CONSTRUCTOR_INGREDIENTS, ADD_CONSTRUCTOR_INGREDIENTS,RESET_CONSTRUCTOR, DELETE_CONSTRUCTOR_INGREDIENTS, ADD_CONSTRUCTOR_INGREDIENTS_BUN} from "../actions/constructorIngredients";
 
 const initialStateAllIngredients= {
     allIngredients: [],
@@ -9,16 +9,16 @@ const initialStateAllIngredients= {
     ingredientsFailed: false,
 }
 const initialStateConstructorIngredients={
-   constructorIngredients: [],
-    isBun: {},
-    total: 0,
+   constructorIngredients:  [] ,
+    isBun: null,
 }
 const initialStateViewedIngredient = {
     currentIngredient: {},
 };
 const initialStateOrder={
-    order: {},
-    number: {},
+    order: {
+        number: null,
+    },
     orderRequest: false,
     orderFailed: false,
 };
@@ -35,11 +35,11 @@ export const allIngredientsReducer = (state = initialStateAllIngredients, action
             return {
                 ...state,
                 ingredientsFailed: false,
-                allIngredients: action.items,
+                allIngredients: action.allIngredients,
                 ingredientsRequest: false,
             };
         }
-        case GET_INGREDIENTS_FAILED: {
+        case GET_INGREDIENTS_ERROR: {
             return {
                 ...state,
                 ingredientsFailed: true,
@@ -55,34 +55,43 @@ export const allIngredientsReducer = (state = initialStateAllIngredients, action
 
 export const constructorIngredientsReducer = (state = initialStateConstructorIngredients, action) => {
     switch (action.type) {
-        case ADD_CONSTRUCTOR_INGREDIENTS: {
-            if (action.payload.type === 'bun') {
+        case ADD_CONSTRUCTOR_INGREDIENTS_BUN: {
                 return {
                         ...state,
-                        isBun: action.payload,
+                        isBun: action.item,
                     };
-                }
+        }
+        case  ADD_CONSTRUCTOR_INGREDIENTS: {
             return {
                 ...state,
-                constructorIngredients: [...state.constructorIngredients, {...action.payload, uniqueId: action.uniqueId}]
-                };
+                constructorIngredients: [...state.constructorIngredients, action.item],
+            };
         }
         case DELETE_CONSTRUCTOR_INGREDIENTS: {
                 return {
                     ...state,
-                    constructorIngredients: [...state.constructorIngredients].filter((item) => item.uniqueId !== action.uniqueId)
+                    constructorIngredients: state.constructorIngredients.filter((elem, i) => i !== action.index),
                 }
         }
         case MOVE_CONSTRUCTOR_INGREDIENTS: {
-            const {dragIndex, hoverIndex} = action.payload;
-            const ingredients = [...state.constructorIngredients];
-            ingredients.splice(dragIndex, 0, ingredients.splice(hoverIndex, 1)[0]);
+            const { dragIndex, hoverIndex } = action.payload;
+            const arr = [...state.constructorIngredients];
+            const dragEl = arr[dragIndex];
+            const hoverEl = arr[hoverIndex];
+            arr[hoverIndex] = dragEl;
+            arr[dragIndex] = hoverEl;
             return {
                 ...state,
-                constructorIngredients: ingredients,
+                constructorIngredients: arr,
             };
         }
-
+        case RESET_CONSTRUCTOR: {
+            return {
+                ...state,
+                constructorIngredients: initialStateConstructorIngredients.constructorIngredients,
+                isBun: initialStateConstructorIngredients.isBun,
+            };
+        }
 
         default: {
             return {
@@ -121,30 +130,34 @@ export const orderReducer = (state = initialStateOrder, action) => {
             return {
                 ...state,
                 orderRequest: true,
+                orderFailed: false,
+                order: {
+                    ...state.order,
+                   number: initialStateOrder.order.number,
+                },
+
             };
         }
         case GET_ORDER_SUCCESS: {
             return {
                 ...state,
                 orderFailed: false,
-                order: action.payload,
-                number: action.payload.order.number,
-                orderRequest: false,
-            };
-        }
-        case GET_ORDER_FAILED: {
-            return {
-                ...state,
-                orderFailed: true,
+                order: {
+                    ...state.order,
+                    number: action.number,
+                },
                 orderRequest: false,
             };
         }
         case SET_ORDER_ERROR: {
             return {
                 ...state,
-                orderFailed: false,
+                orderFailed: true,
                 orderRequest: false,
-                order: null,
+                order: {
+                    ...state.order,
+                   number: initialStateOrder.order.number,
+                },
             };
         }
         default: {
