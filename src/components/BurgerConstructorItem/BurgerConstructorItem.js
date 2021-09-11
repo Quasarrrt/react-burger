@@ -6,6 +6,7 @@ import { useRef } from "react";
 import { MOVE_CONSTRUCTOR_INGREDIENTS, DELETE_CONSTRUCTOR_INGREDIENTS} from "../../services/actions/constructorIngredients";
 import {cardPropTypes} from "../../propTypes/propTypes";
 import constructorItemStyles from './BurgerConstructorItem.module.css'
+import constructorStyles from "../BurgerConstructor/BurgerConstructor.module.css";
 
 function BurgerConstructorItem({ type, burger, index, locked }) {
 
@@ -65,7 +66,7 @@ function BurgerConstructorItem({ type, burger, index, locked }) {
     drag(drop(dropRef));
 
     return (
-        <div ref={dropRef} data-handler-id={handlerId} className={constructorItemStyles.itemWrapper}>
+        <div ref={dropRef} data-handler-id={handlerId} className={ ["mb-4", constructorItemStyles.itemWrapper].join(' ')}>
             {burger.type !== "bun" ? (<DragIcon type="primary" />) : null}
 
             <ConstructorElement

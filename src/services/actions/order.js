@@ -4,7 +4,7 @@ export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
 export const SET_ORDER_ERROR='SET_ORDER_ERROR';
 
-export const getOrderNum=(orderItems) => {
+export const getOrderNum=(orderItems, openOrder) => {
     return function(dispatch) {
         dispatch({
             type: GET_ORDER_REQUEST,
@@ -22,6 +22,7 @@ export const getOrderNum=(orderItems) => {
                         type: GET_ORDER_SUCCESS,
                         number: res.order.number,
                     });
+                    openOrder(true);
 
                 } else {
                     dispatch({

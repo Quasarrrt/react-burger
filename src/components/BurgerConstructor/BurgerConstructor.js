@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {  CurrencyIcon, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from './BurgerConstructor.module.css';
 import PropTypes from 'prop-types';
@@ -7,10 +7,13 @@ import { RESET_CONSTRUCTOR} from "../../services/actions/constructorIngredients"
 import {getOrderNum, SET_ORDER_ERROR} from "../../services/actions/order";
 import BurgerConstructorItems from "../BurgerConstructorItems/BurgerConstructorItems";
 import {useMemo} from "react";
+import OrderDetails from "../OrderDetails/OrderDetails";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import Modal from "../Modal/Modal";
 
 
 
-const BurgerConstructor = ({onOrderClick}) => {
+const BurgerConstructor = () => {
 
     const dispatch=useDispatch();
     const { constructorIngredients, isBun } = useSelector((state) => ({
@@ -19,6 +22,11 @@ const BurgerConstructor = ({onOrderClick}) => {
 
     }));
 
+    const [isOpen, setIsOpen] = useState(false)
+
+    const handleCloseModal = () => {
+        setIsOpen(false);
+    }
     const orderSend=()=>{
         if(isBun!==null){
         if (isBun._id) {
@@ -26,7 +34,9 @@ const BurgerConstructor = ({onOrderClick}) => {
                 ...constructorIngredients.map((element) => element._id),
                 isBun._id,
             ];
-            dispatch(getOrderNum(ingredientsIds));
+            dispatch(getOrderNum(ingredientsIds, setIsOpen));
+
+
             dispatch({
                 type: RESET_CONSTRUCTOR,
             });
@@ -39,6 +49,13 @@ const BurgerConstructor = ({onOrderClick}) => {
             });
         }
     }
+
+    const orderModal= (
+        <Modal open={isOpen} onClose={handleCloseModal}  title={""} >
+            <OrderDetails/>
+        </Modal>
+    )
+
     const totalPrice = useMemo(() => {
         return constructorIngredients.reduce(function (acc, item) {
             let totalPrice = item.price;
@@ -62,11 +79,12 @@ const BurgerConstructor = ({onOrderClick}) => {
                         </div>
                         
                         <Button type="primary" size="large" onClick={()=>{
-                            onOrderClick();
+                            //onOrderClick();
                             orderSend();
                         }}>
                             Оформить заказ
                         </Button>
+                        {isOpen&&orderModal}
                     </div>
 
             </section>
@@ -77,7 +95,7 @@ const BurgerConstructor = ({onOrderClick}) => {
 };
 
 BurgerConstructor.propTypes = {
-    onOrderClick: PropTypes.func.isRequired,
+    //onOrderClick: PropTypes.func.isRequired,
 
 };
 

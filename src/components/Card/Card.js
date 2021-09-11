@@ -29,6 +29,7 @@ const Card = ({card, onCardClick}) => {
         onCardClick(card);
         return false;
     };
+
     const counter = card.type === 'bun' && isBun?._id === card._id ? 2 : card.type !== 'bun' ? constructorIngredients.filter(
         item => item._id === card._id).length
         : 0;

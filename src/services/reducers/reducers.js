@@ -75,14 +75,11 @@ export const constructorIngredientsReducer = (state = initialStateConstructorIng
         }
         case MOVE_CONSTRUCTOR_INGREDIENTS: {
             const { dragIndex, hoverIndex } = action.payload;
-            const arr = [...state.constructorIngredients];
-            const dragEl = arr[dragIndex];
-            const hoverEl = arr[hoverIndex];
-            arr[hoverIndex] = dragEl;
-            arr[dragIndex] = hoverEl;
+            const constructorIngredients = [...state.constructorIngredients];
+            constructorIngredients[dragIndex] = constructorIngredients.splice(hoverIndex, 1, constructorIngredients[dragIndex])[0];
             return {
                 ...state,
-                constructorIngredients: arr,
+                constructorIngredients,
             };
         }
         case RESET_CONSTRUCTOR: {

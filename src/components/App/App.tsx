@@ -20,14 +20,8 @@ function App() {
         setIsOpen(true);
 
     }
-    const [isOrderModal, setIsOrderModal ]=useState(false)
-    const handleOpenOrder = () => {
-        setIsOrderModal(true);
-        setIsOpen(true);
-    }
     const handleCloseModal = () => {
         setIsOpen(false);
-        setIsOrderModal(false);
     }
     const dispatch=useDispatch();
     useEffect(
@@ -37,16 +31,18 @@ function App() {
         [dispatch]
     );
 
+
+
         return (
         <>
             <AppHeader/>
             <main className={mainStyles.main}>
                 <DndProvider backend={HTML5Backend}>
                     <BurgerIngredients onCardClick={handleOpenIngredientModal} />
-                    <BurgerConstructor onOrderClick={handleOpenOrder}/>
+                    <BurgerConstructor/>
                 </DndProvider>
-                <Modal open={isOpen} onClose={handleCloseModal}  title={isOrderModal  ? "" : "Детали ингредиента"} >
-                    {isOrderModal  ? <OrderDetails/> : <IngredientDetails/> }
+                <Modal open={isOpen} onClose={handleCloseModal}  title={ "Детали ингредиента"} >
+                     <IngredientDetails/>
                 </Modal>
 
             </main>
