@@ -1,15 +1,17 @@
 import React from 'react';
 import stylesIngredientDetails from "./IngredientDetails.module.css"
-import {cardPropTypes} from "../../propTypes/propTypes";
-import Card from "../Card/Card";
+import {useSelector} from "react-redux";
 
 
-const IngredientDetails = ({card}) => {
+const IngredientDetails = () => {
+
+    const {currentIngredient} = useSelector((state) =>({ currentIngredient: state.viewedIngredient.currentIngredient}));
+    //console.log(currentIngredient)
     return (
         <div className={stylesIngredientDetails.ingredientContainer}>
-            <img src={card.image} alt={card.name} className={["mb-4",stylesIngredientDetails.image].join(' ')}/>
+            <img src={currentIngredient.image} alt={currentIngredient.name} className={["mb-4",stylesIngredientDetails.image].join(' ')}/>
             <h3 className={["text text_type_main-medium mb-8", stylesIngredientDetails.title].join(' ')}>
-                {card.name}
+                {currentIngredient.name}
             </h3>
             <ul className={["mb-15",stylesIngredientDetails.list ].join(' ')}>
                 <li className={["mr-5",stylesIngredientDetails.calories].join(' ')}>
@@ -17,7 +19,7 @@ const IngredientDetails = ({card}) => {
                         Калории,ккал
                     </p>
                     <p className={["mt-2 text text_type_digits-default", stylesIngredientDetails.caloriesNum].join(' ')}>
-                        {card.calories}
+                        {currentIngredient.calories}
                     </p>
 
                 </li>
@@ -26,7 +28,7 @@ const IngredientDetails = ({card}) => {
                         Белки, г
                     </p>
                     <p className={["mt-2 text text_type_digits-default", stylesIngredientDetails.caloriesNum].join(' ')}>
-                        {card.proteins}
+                        {currentIngredient.proteins}
                     </p>
 
                 </li>
@@ -35,7 +37,7 @@ const IngredientDetails = ({card}) => {
                         Жиры, г
                     </p>
                     <p className={["mt-2 text text_type_digits-default" , stylesIngredientDetails.caloriesNum].join(' ')}>
-                        {card.fat}
+                        {currentIngredient.fat}
                     </p>
                 </li>
                 <li className={stylesIngredientDetails.calories}>
@@ -43,7 +45,7 @@ const IngredientDetails = ({card}) => {
                         Углеводы, г
                     </p>
                     <p className={["mt-2 text text_type_digits-default", stylesIngredientDetails.caloriesNum].join(' ')}>
-                        {card.carbohydrates}
+                        {currentIngredient.carbohydrates}
                     </p>
                 </li>
             </ul>
@@ -52,8 +54,6 @@ const IngredientDetails = ({card}) => {
     );
 };
 
-Card.propTypes = {
-    card: cardPropTypes.isRequired
-};
+
 
 export default IngredientDetails;

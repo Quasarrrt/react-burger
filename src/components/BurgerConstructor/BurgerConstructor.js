@@ -1,79 +1,101 @@
-import React from 'react';
-import { ConstructorElement, CurrencyIcon, Button,DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import React, {useState} from 'react';
+import {  CurrencyIcon, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from './BurgerConstructor.module.css';
 import PropTypes from 'prop-types';
-import {cardPropTypes} from "../../propTypes/propTypes";
+import {useDispatch, useSelector} from "react-redux";
+import { RESET_CONSTRUCTOR} from "../../services/actions/constructorIngredients";
+import {getOrderNum, SET_ORDER_ERROR} from "../../services/actions/order";
+import BurgerConstructorItems from "../BurgerConstructorItems/BurgerConstructorItems";
+import {useMemo} from "react";
+import OrderDetails from "../OrderDetails/OrderDetails";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import Modal from "../Modal/Modal";
 
-const BurgerConstructor = ({items, isLoading, onClick}) => {
-const bunElem=items[0];
+
+
+const BurgerConstructor = () => {
+
+    const dispatch=useDispatch();
+    const { constructorIngredients, isBun } = useSelector((state) => ({
+        constructorIngredients: state.constructorIngredients.constructorIngredients,
+        isBun: state.constructorIngredients.isBun,
+
+    }));
+
+    const [isOpen, setIsOpen] = useState(false)
+
+    const handleCloseModal = () => {
+        setIsOpen(false);
+    }
+    const orderSend=()=>{
+        if(isBun!==null){
+        if (isBun._id) {
+            const ingredientsIds = [
+                ...constructorIngredients.map((element) => element._id),
+                isBun._id,
+            ];
+            dispatch(getOrderNum(ingredientsIds, setIsOpen));
+
+
+            dispatch({
+                type: RESET_CONSTRUCTOR,
+            });
+
+        }
+        }
+        else {
+            dispatch({
+                type: SET_ORDER_ERROR,
+            });
+        }
+    }
+
+    const orderModal= (
+        <Modal open={isOpen} onClose={handleCloseModal}  title={""} >
+            <OrderDetails/>
+        </Modal>
+    )
+
+    const totalPrice = useMemo(() => {
+        return constructorIngredients.reduce(function (acc, item) {
+            let totalPrice = item.price;
+            if (item.type === 'bun') {
+                totalPrice += item.price;
+            }
+            return acc + totalPrice;}, 0) + (isBun ? isBun.price * 2 : 0);
+    }, [constructorIngredients, isBun]);
+
     return (
-        <>
-            {!isLoading && (
-                <section className={["pt-25 pl-4 pr-4", constructorStyles.items].join(' ')}>
-                    <ul className={constructorStyles.ul}>
-                        <li className={constructorStyles.item}>
-                    <span className={["pb-4", constructorStyles.itemWrapper].join(' ')}>
-                        <ConstructorElement
-                            type='top'
-                            isLocked={true}
-                            text={(bunElem?.name + ' (верх)') || ""}
-                            price={(bunElem?.price) || ""}
-                            thumbnail={(bunElem?.image) || ""}
-                        />
-                    </span>
-                        </li>
-                        <div className={constructorStyles.scroll}>
-                            {items.map((item) => {
-                                    return (
-                                        item.type !== "bun" && (
-                                            <li className={["pb-4", constructorStyles.item].join(' ')} key={item._id}>
-                                                <DragIcon type="primary"/>
-                                                <span className={constructorStyles.itemWrapper}>
-                                    <ConstructorElement
-                                        isLocked={false}
-                                        text={item.name}
-                                        price={item.price}
-                                        thumbnail={item.image}
-                                    />
-                                </span>
-                                            </li>))
-                                }
-                            )}
-                        </div>
-                        <li className={["pt-4", constructorStyles.item].join(' ')}>
-                            <div className={constructorStyles.itemWrapper}>
-                                <ConstructorElement
-                                    type='bottom'
-                                    isLocked={true}
-                                    text={(bunElem?.name + ' (низ)') || ""}
-                                    price={(bunElem?.price) || ""}
-                                    thumbnail={(bunElem?.image) || ""}
-                                />
-                            </div>
-                        </li>
 
-                    </ul>
+        <>
+            <section className={["pt-25 pl-4 pr-4", constructorStyles.items].join(' ')}>
+                <BurgerConstructorItems/>
                     <div className={["pt-10", constructorStyles.totalWrapper].join(' ')}>
                         <div className={["pr-10", constructorStyles.totalPrice].join(' ')}>
-                            <p className="text text_type_digits-medium">610</p>
+                            <p className="text text_type_digits-medium">
+                                {totalPrice ||0}
+                            </p>
                             <CurrencyIcon type="primary"/>
                         </div>
-                        <Button type="primary" size="large" onClick={onClick}>
+                        
+                        <Button type="primary" size="large" onClick={()=>{
+                            //onOrderClick();
+                            orderSend();
+                        }}>
                             Оформить заказ
                         </Button>
+                        {isOpen&&orderModal}
                     </div>
 
+            </section>
 
-                </section>
-            )
-            }</>
+
+            </>
     );
 };
 
 BurgerConstructor.propTypes = {
-    items: PropTypes.arrayOf(cardPropTypes.isRequired).isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    onClick: PropTypes.func.isRequired,
+    //onOrderClick: PropTypes.func.isRequired,
 
 };
 

@@ -1,12 +1,16 @@
 import React from 'react';
 import stylesOrderDetails from './OrderDetails.module.css'
 import doneImage from '../../images/done.svg'
+import {useSelector} from "react-redux";
 
-const OrderDatails = () => {
+
+const OrderDetails = () => {
+    const orderNum = useSelector((store) => store.order.order.number);
+
     return (
         <div className={stylesOrderDetails.orderWrapper}>
             <div className={["mt-4 mb-8 text text_type_digits-large",stylesOrderDetails.orderNum].join('  ')}>
-                034536
+                 { orderNum }
             </div>
             <p className={["mb-15 text text_type_main-medium", stylesOrderDetails.order].join('  ')}>
                 идентификатор заказа
@@ -22,4 +26,4 @@ const OrderDatails = () => {
     );
 };
 
-export default OrderDatails;
+export default OrderDetails;

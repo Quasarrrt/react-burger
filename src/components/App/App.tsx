@@ -6,64 +6,43 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import mainStyles from "./App.module.css"
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import OrderDatails from "../OrderDetails/OrderDatails";
+import OrderDetails from "../OrderDetails/OrderDetails";
+import {useDispatch} from "react-redux";
+import {getIngredients} from "../../services/actions/allIngredients";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
 
 function App() {
-    const api="https://norma.nomoreparties.space/api/ingredients"
 
-    const [state, setState] = React.useState( {
-        isLoading: false,
-        hasError: false,
-        data: []
-
-    });
     const [isOpen, setIsOpen] = useState(false)
-
-    useEffect(()=>{
-        getMenu();
-    },[])
-
-    const getMenu = () => {
-        setState({ ...state, hasError: false, isLoading: true });
-        fetch(api)
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`Ошибка ${res.status}`);
-            })
-            .then(data =>{
-
-                setState({ ...state, data: data.data, isLoading: false })
-            } )
-            .catch(e => {
-                setState({ ...state, hasError: true, isLoading: false });
-                console.log(e)
-            });
-    };
-    const [cardInModal, setCardInModal]=useState({})
-    const handleOpenModal = (card:any) => {
+    const handleOpenIngredientModal = () => {
         setIsOpen(true);
-        setCardInModal(card);
-    }
-    const [isOrderModal, setIsOrderModal]=useState(false)
-    const handleOpenOrder = () => {
-        setIsOrderModal(true);
-        setIsOpen(true);
+
     }
     const handleCloseModal = () => {
         setIsOpen(false);
-        setIsOrderModal(false);
     }
+    const dispatch=useDispatch();
+    useEffect(
+        () => {
+            dispatch( getIngredients());
+        },
+        [dispatch]
+    );
 
-    return (
+
+
+        return (
         <>
             <AppHeader/>
             <main className={mainStyles.main}>
-                <BurgerIngredients data={state.data}  onIngredientClick={handleOpenModal}/>
-                <BurgerConstructor items={state.data} isLoading={state.isLoading} onClick={handleOpenOrder}/>
-                <Modal open={isOpen} onClose={handleCloseModal}  title={isOrderModal ? "" : "Детали ингредиента"} >
-                    {isOrderModal ? <OrderDatails/> : <IngredientDetails card={cardInModal}/> }
+                <DndProvider backend={HTML5Backend}>
+                    <BurgerIngredients onCardClick={handleOpenIngredientModal} />
+                    <BurgerConstructor/>
+                </DndProvider>
+                <Modal open={isOpen} onClose={handleCloseModal}  title={ "Детали ингредиента"} >
+                     <IngredientDetails/>
                 </Modal>
 
             </main>
