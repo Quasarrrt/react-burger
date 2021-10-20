@@ -7,7 +7,7 @@ import InrgedientDetails from '../components/IngredientDetails/IngredientDetails
 
 import styles from './ingredient-details.module.css';
 
-export const IngredientDetailsPage = () => {
+const IngredientDetailsPage = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const { allIngredients } = useSelector((state) => state.allIngredients);
@@ -26,3 +26,4 @@ export const IngredientDetailsPage = () => {
         </div>
     );
 };
+export default IngredientDetailsPage;

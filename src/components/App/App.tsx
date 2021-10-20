@@ -13,7 +13,14 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import {Router, Route, Switch, useHistory, useLocation} from "react-router-dom";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import {ForgotPasswordPage,ProfileOrdersPage,ProfileOrderPage, IngredientDetailsPage, LoginPage,ProfilePage, RegisterPage, ResetPasswordPage} from '../../pages'
+import ForgotPasswordPage from "../../pages/forgot-password";
+import ResetPasswordPage from "../../pages/reset-password";
+import LoginPage from "../../pages/login";
+import ProfileOrderPage from "../../pages/profile-order";
+import ProfilePage from "../../pages/profile";
+import IngredientDetailsPage from "../../pages/ingredient-details"
+import ProfileOrdersPage from "../../pages/profile-orders";
+import RegisterPage from "../../pages/register";
 function App() {
 
     const [isOpen, setIsOpen] = useState(false)
@@ -42,10 +49,12 @@ function App() {
             <AppHeader/>
     <Switch location={background || location}>
         <Route path="/" exact={true}>
+            <main className={mainStyles.main}>
             <DndProvider backend={HTML5Backend}>
                 <BurgerIngredients onCardClick={handleOpenIngredientModal} />
-                <BurgerConstructor/>
+                <BurgerConstructor history={history}/>
             </DndProvider>
+            </main>
         </Route>
         <Route path="/login" exact={true}>
             <LoginPage />
@@ -72,15 +81,10 @@ function App() {
             <IngredientDetailsPage />
         </Route>
     </Switch>
-                {isOrderDetailsModalContent && (
-                    <Modal onClose={closeAllModals} modalHeader={modalHeader} isGoBack={false}>
-                        <OrderDetails onClose={closeAllModals} />
-                    </Modal>
-                )}
 
                 {background && (
-                    <Modal onClose={closeAllModals} modalHeader={modalHeader} isGoBack={true}>
-                        <InrgedientDetails ingredientDetails={ingredientDetails} />
+                    <Modal open={isOpen} onClose={handleCloseModal}  title={ "Детали ингредиента"} >
+                        <IngredientDetails/>
                     </Modal>
                 )}
             </>

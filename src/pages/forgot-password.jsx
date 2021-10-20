@@ -1,12 +1,12 @@
 import React from 'react';
-import styles from "./forgotPassword.module.css";
+import styles from "./forgot-password.module.css"
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import {Link, Redirect,  useLocation} from 'react-router-dom';
 import {forgotPassword} from '../services/actions/auth';
 import {useDispatch, useSelector} from "react-redux";
 import {getRefreshTokenFromCookie} from "../services/cookieFunctions";
 
-export const ForgotPasswordPage = () => {
+ const  ForgotPasswordPage = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = React.useState('');
     const location = useLocation();
@@ -59,3 +59,4 @@ export const ForgotPasswordPage = () => {
             </>
         );
 }
+export default ForgotPasswordPage;

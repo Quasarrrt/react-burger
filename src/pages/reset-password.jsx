@@ -6,7 +6,7 @@ import {resetPassword} from '../services/actions/auth';
 import {useDispatch, useSelector} from "react-redux";
 import {getRefreshTokenFromCookie} from "../services/cookieFunctions";
 
-export const ResetPasswordPage = () => {
+const ResetPasswordPage = () => {
     const [password, setPassword] = useState('');
     const [token, setToken] = useState('');
     const history = useHistory();
@@ -70,3 +70,4 @@ export const ResetPasswordPage = () => {
         </>
     );
 }
+export default ResetPasswordPage;

@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {register} from '../services/actions/auth';
 import {getRefreshTokenFromCookie} from "../services/cookieFunctions";
 
-export const RegisterPage = () => {
+const RegisterPage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [name, setName] = useState('');
@@ -78,3 +78,4 @@ export const RegisterPage = () => {
         </>
     );
 }
+export default RegisterPage;

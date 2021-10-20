@@ -1,6 +1,8 @@
 .card {
     position: relative;
     width: 272px;
+    text-decoration: none;
+    color:#F2F2F3;
 }
 
 .counter {

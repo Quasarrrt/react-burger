@@ -7,8 +7,7 @@ import {Input, PasswordInput, Button} from '@ya.praktikum/react-developer-burger
 import {getRefreshTokenFromCookie} from "../services/cookieFunctions";
 
 
-
-export const LoginPage = () => {
+ const LoginPage = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -80,3 +79,4 @@ export const LoginPage = () => {
         </>
     );
 }
+export default LoginPage;

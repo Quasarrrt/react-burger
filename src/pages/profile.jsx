@@ -6,8 +6,7 @@ import {getAccessTokenFromCookie, getRefreshTokenFromCookie, setCookie} from "..
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {getUserInfo, logout, updateUserInfo} from "../services/actions/auth";
 
-
-export const ProfilePage = () => {
+ const ProfilePage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [userInfo, setUserInfo] = React.useState({
@@ -143,3 +142,4 @@ export const ProfilePage = () => {
         </section>
     );
 }
+export default ProfilePage;

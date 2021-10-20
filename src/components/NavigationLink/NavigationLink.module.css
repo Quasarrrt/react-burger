@@ -1,0 +1,24 @@
+.link {
+    display: flex;
+    align-items: center;
+}
+
+.linkText {
+    white-space: nowrap;
+    text-decoration: none;
+    transition: opacity ease 0.3s;
+}
+
+.linkText:hover {
+    opacity: 0.6;
+    white-space: nowrap;
+}
+
+.linkTextActive {
+    color: #fff;
+}
+
+.linkTextActive:hover {
+    cursor: default;
+    opacity: 1;
+}
