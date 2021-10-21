@@ -1,12 +1,29 @@
 import React from 'react';
 import stylesIngredientDetails from "./IngredientDetails.module.css"
 import {useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
+import  {useEffect} from "react";
+import { useParams } from "react-router-dom";
+import {getViewedIngredient} from "../../services/actions/viewedIngredient";
 
 
 const IngredientDetails = () => {
 
-    const {currentIngredient} = useSelector((state) =>({ currentIngredient: state.viewedIngredient.currentIngredient}));
-    //console.log(currentIngredient)
+    const { id } = useParams();;
+    const dispatch = useDispatch();
+    const ingredients = useSelector(state => state.allIngredients);
+
+    useEffect(() => {
+            const itemData = ingredients.allIngredients?.find(item => item._id == id);
+            itemData && dispatch(getViewedIngredient(itemData));
+        }, [id,ingredients.allIngredients]
+    );
+
+
+    const currentIngredient = useSelector(state => state.viewedIngredient.currentIngredient);
+
+
+
     return (
         <div className={stylesIngredientDetails.ingredientContainer}>
             <img src={currentIngredient.image} alt={currentIngredient.name} className={["mb-4",stylesIngredientDetails.image].join(' ')}/>
