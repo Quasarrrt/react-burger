@@ -10,11 +10,13 @@ import {useMemo} from "react";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
+import {getRefreshTokenFromCookie} from "../../services/cookieFunctions";
+import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 
 
-
-const BurgerConstructor = () => {
-
+const BurgerConstructor = ({history}) => {
+    const { loginSuccess } = useSelector((state) => state.auth);
+    const isRefreshToken = getRefreshTokenFromCookie();
     const dispatch=useDispatch();
     const { constructorIngredients, isBun } = useSelector((state) => ({
         constructorIngredients: state.constructorIngredients.constructorIngredients,
@@ -28,8 +30,9 @@ const BurgerConstructor = () => {
         setIsOpen(false);
     }
     const orderSend=()=>{
-        if(isBun!==null){
-        if (isBun._id) {
+        if (loginSuccess || isRefreshToken) {
+            if(isBun!==null){
+                if (isBun._id) {
             const ingredientsIds = [
                 ...constructorIngredients.map((element) => element._id),
                 isBun._id,
@@ -47,6 +50,10 @@ const BurgerConstructor = () => {
             dispatch({
                 type: SET_ORDER_ERROR,
             });
+        }
+        }
+        else {
+            history.push('/login');
         }
     }
 
@@ -95,8 +102,7 @@ const BurgerConstructor = () => {
 };
 
 BurgerConstructor.propTypes = {
-    //onOrderClick: PropTypes.func.isRequired,
-
+  history: PropTypes.object.isRequired,
 };
 
 export default BurgerConstructor;

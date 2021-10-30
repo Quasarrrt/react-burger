@@ -70,7 +70,8 @@ function BurgerConstructorItem({ type, burger, index, locked }) {
             {burger.type !== "bun" ? (<DragIcon type="primary" />) : null}
 
             <ConstructorElement
-                text={burger?.name}
+
+                text={burger.type !== "bun"? burger?.name: type==="top"? burger?.name+" (верх)":burger?.name+" (низ)"}
                 price={burger?.price}
                 thumbnail={burger?.image}
                 type={type}

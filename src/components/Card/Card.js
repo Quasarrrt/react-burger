@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
 import {ADD_VIEWED_INGREDIENT_DATA} from "../../services/actions/viewedIngredient";
 import {useDrag} from "react-dnd";
-
+import {Link, useLocation} from "react-router-dom";
 
 const Card = ({card, onCardClick}) => {
     const dispatch=useDispatch();
@@ -33,8 +33,20 @@ const Card = ({card, onCardClick}) => {
     const counter = card.type === 'bun' && isBun?._id === card._id ? 2 : card.type !== 'bun' ? constructorIngredients.filter(
         item => item._id === card._id).length
         : 0;
+
+    const location = useLocation();
+    const ingredientId = card['_id'];
     return (
-                <div className={["mr-2 ml-4 mt-6 mb-10",cardStyles.card].join(' ')} onClick={handleClick} ref={dragRef}>
+
+                    <Link
+                        className={["mr-2 ml-4 mt-6 mb-10",cardStyles.card].join(' ')}
+                        ref={dragRef}
+                        to={{
+                            pathname: `/ingredients/${ingredientId}`,
+                            state: {background: location},
+                        }}
+                        onClick={handleClick}
+                    >
                     <div className={cardStyles.counter}>
                         <Counter count={counter} size="default" />
                     </div>
@@ -44,7 +56,7 @@ const Card = ({card, onCardClick}) => {
                         <CurrencyIcon type="primary" />
                     </div>
                     <p className={["text text_type_main-default",cardStyles.name].join(' ')}>{card.name}</p>
-                </div>
+                </Link>
     );
 };
 
