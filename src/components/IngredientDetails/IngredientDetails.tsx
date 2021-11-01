@@ -7,20 +7,21 @@ import { useParams } from "react-router-dom";
 import {getViewedIngredient} from "../../services/actions/viewedIngredient";
 
 
+
 const IngredientDetails = () => {
 
-    const { id } = useParams();;
+    const { id } = useParams<{id: string}>();
     const dispatch = useDispatch();
-    const ingredients = useSelector(state => state.allIngredients);
+    const ingredients = useSelector((state:any) => state.allIngredients);
 
     useEffect(() => {
-            const itemData = ingredients.allIngredients?.find(item => item._id == id);
+            const itemData = ingredients.allIngredients?.find((item: { _id: string|undefined; }) => item._id === id);
             itemData && dispatch(getViewedIngredient(itemData));
         }, [id,ingredients.allIngredients]
     );
 
 
-    const currentIngredient = useSelector(state => state.viewedIngredient.currentIngredient);
+    const currentIngredient = useSelector((state:any) => state.viewedIngredient.currentIngredient);
 
 
 

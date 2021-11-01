@@ -5,18 +5,21 @@ import {Link, Redirect,  useLocation} from 'react-router-dom';
 import {forgotPassword} from '../services/actions/auth';
 import {useDispatch, useSelector} from "react-redux";
 import {getRefreshTokenFromCookie} from "../services/cookieFunctions";
+import {useState} from "react";
+import {TLocationState} from "../services/types/types";
+
 
  const  ForgotPasswordPage = () => {
     const dispatch = useDispatch();
-    const [email, setEmail] = React.useState('');
-    const location = useLocation();
+    const [email, setEmail] = useState<string>('');
+    const location = useLocation<TLocationState>();
 
-    const formSubmit = (e) => {
+    const formSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(forgotPassword(email));
         setEmail('');
     };
-    const { forgotPasswordSuccess } = useSelector((state) => state.auth);
+    const { forgotPasswordSuccess } = useSelector((state:any) => state.auth);
 
     const isLogin = !!getRefreshTokenFromCookie();
 

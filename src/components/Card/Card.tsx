@@ -5,19 +5,24 @@ import {cardPropTypes} from "../../propTypes/propTypes";
 import PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
 import {ADD_VIEWED_INGREDIENT_DATA} from "../../services/actions/viewedIngredient";
-import {useDrag} from "react-dnd";
+import {DragSourceMonitor, useDrag} from "react-dnd";
 import {Link, useLocation} from "react-router-dom";
+import {IItem} from "../../services/types/types";
+interface ICard {
+    card:IItem;
+    onCardClick: (card:IItem)=>void;
+}
 
-const Card = ({card, onCardClick}) => {
+const Card : React.FC<ICard> =  ({card, onCardClick}) => {
     const dispatch=useDispatch();
-    const  {constructorIngredients, isBun}=useSelector((state)=>({
+    const  {constructorIngredients, isBun}=useSelector((state:any)=>({
         constructorIngredients: state.constructorIngredients.constructorIngredients,
         isBun: state.constructorIngredients.isBun,
     }))
     const [{isDrag}, dragRef] = useDrag({
         type: 'item',
         item: card,
-        collect: monitor => ({
+        collect: (monitor) => ({
             isDrag: monitor.isDragging()
         })
     });
@@ -30,8 +35,8 @@ const Card = ({card, onCardClick}) => {
         return false;
     };
 
-    const counter = card.type === 'bun' && isBun?._id === card._id ? 2 : card.type !== 'bun' ? constructorIngredients.filter(
-        item => item._id === card._id).length
+    const count = card.type === 'bun' && isBun?._id === card._id ? 2 : card.type !== 'bun' ? constructorIngredients.filter(
+            (item: { _id: string|undefined; })=> item._id === card._id).length
         : 0;
 
     const location = useLocation();
@@ -48,7 +53,7 @@ const Card = ({card, onCardClick}) => {
                         onClick={handleClick}
                     >
                     <div className={cardStyles.counter}>
-                        <Counter count={counter} size="default" />
+                        <Counter count={count} size="default" />
                     </div>
                     <img src={card.image} alt={card.name} className={["pr-4 pl-4", cardStyles.pic].join(' ')} />
                     <div className={["pt-1 pb-1", cardStyles.price].join(' ')}>
@@ -60,9 +65,9 @@ const Card = ({card, onCardClick}) => {
     );
 };
 
-Card.propTypes = {
+/*Card.propTypes = {
    card: cardPropTypes.isRequired,
     onCardClick: PropTypes.func.isRequired,
-};
+};*/
 
 export default Card;

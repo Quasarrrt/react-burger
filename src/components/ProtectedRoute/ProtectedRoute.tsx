@@ -3,6 +3,8 @@ import {getRefreshTokenFromCookie} from "../../services/cookieFunctions";
 import React, { FC }  from "react";
 
 interface IProtectedRoute {
+    path:string;
+    exact: boolean;
 }
 
 const ProtectedRoute: FC<IProtectedRoute>=({ children, ...rest })=> {
@@ -11,7 +13,7 @@ const ProtectedRoute: FC<IProtectedRoute>=({ children, ...rest })=> {
         <Route
             {...rest}
             render={(location) => {
-                return isLogin ? (children) : (<Redirect to={{ pathname: '/login', state: { from: location }}} />);
+                return isLogin ? (children) : (<Redirect to={{ pathname: '/login'}} />);
             }}
         />
     );

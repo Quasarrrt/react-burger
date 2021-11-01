@@ -9,7 +9,6 @@ interface IModal {
     open: boolean;
     onClose: () => void;
     title:string;
-    elementId:string;
 }
 const Modal: React.FC<IModal>= ({ open, children, onClose, title })=>{
     const onKeydown = (event:KeyboardEvent) => {
