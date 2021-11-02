@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/react-burger/static/css/main.8235c00d.chunk.css",
+    "main.js": "/react-burger/static/js/main.6f279c89.chunk.js",
+    "main.js.map": "/react-burger/static/js/main.6f279c89.chunk.js.map",
+    "runtime-main.js": "/react-burger/static/js/runtime-main.33acee13.js",
+    "runtime-main.js.map": "/react-burger/static/js/runtime-main.33acee13.js.map",
+    "static/css/2.709f59e5.chunk.css": "/react-burger/static/css/2.709f59e5.chunk.css",
+    "static/js/2.81c374c4.chunk.js": "/react-burger/static/js/2.81c374c4.chunk.js",
+    "static/js/2.81c374c4.chunk.js.map": "/react-burger/static/js/2.81c374c4.chunk.js.map",
+    "index.html": "/react-burger/index.html",
+    "static/css/2.709f59e5.chunk.css.map": "/react-burger/static/css/2.709f59e5.chunk.css.map",
+    "static/css/main.8235c00d.chunk.css.map": "/react-burger/static/css/main.8235c00d.chunk.css.map",
+    "static/js/2.81c374c4.chunk.js.LICENSE.txt": "/react-burger/static/js/2.81c374c4.chunk.js.LICENSE.txt",
+    "static/media/fonts.css": "/react-burger/static/media/iceland.77ad7fc2.woff",
+    "static/media/done.85c3a14d.svg": "/react-burger/static/media/done.85c3a14d.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.33acee13.js",
+    "static/css/2.709f59e5.chunk.css",
+    "static/js/2.81c374c4.chunk.js",
+    "static/css/main.8235c00d.chunk.css",
+    "static/js/main.6f279c89.chunk.js"
+  ]
+}
