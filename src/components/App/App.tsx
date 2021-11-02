@@ -21,9 +21,10 @@ import ProfilePage from "../../pages/profile";
 import IngredientDetailsPage from "../../pages/ingredient-details"
 import ProfileOrdersPage from "../../pages/profile-orders";
 import RegisterPage from "../../pages/register";
+import {TLocationState} from "../../services/types/types"
 function App() {
 
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const handleOpenIngredientModal = () => {
         setIsOpen(true);
     }
@@ -38,11 +39,9 @@ function App() {
         [dispatch]
     );
     const history = useHistory();
-    const action = history.action === 'PUSH' || history.action === 'REPLACE';
 
-    let location = useLocation();
-    // @ts-ignore
-    let background = action && location.state && location.state.background;
+    let location = useLocation<TLocationState>();
+    let background =(history.action === 'PUSH' || history.action === 'REPLACE') && location.state && location.state.background;
 
         return (
             <>

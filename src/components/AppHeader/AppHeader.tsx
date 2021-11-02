@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 import Navigation from '../Navigation/Navigation';
 import ProfileHeader from "../ProfileHeader/ProfileHeader";
-
 import styles from './AppHeader.module.css';
 
 function AppHeader() {

@@ -1,14 +1,20 @@
 import {ConstructorElement, DragIcon,} from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { useDrag, useDrop } from "react-dnd";
-import { useRef } from "react";
+import {DropTargetMonitor, useDrag, useDrop} from "react-dnd";
+import { useRef, FC } from "react";
 import { MOVE_CONSTRUCTOR_INGREDIENTS, DELETE_CONSTRUCTOR_INGREDIENTS} from "../../services/actions/constructorIngredients";
 import {cardPropTypes} from "../../propTypes/propTypes";
 import constructorItemStyles from './BurgerConstructorItem.module.css'
-import constructorStyles from "../BurgerConstructor/BurgerConstructor.module.css";
+import {IItem} from "../../services/types/types";
 
-function BurgerConstructorItem({ type, burger, index, locked }) {
+interface IBurgerConstructorItem {
+    type?: "top" | "bottom" ,
+    index: number,
+    burger: IItem,
+    locked?: boolean,
+}
+const BurgerConstructorItem: FC<IBurgerConstructorItem>=({ type, burger, index, locked })=>{
 
     const dispatch = useDispatch();
     function handleClose() {
@@ -17,27 +23,28 @@ function BurgerConstructorItem({ type, burger, index, locked }) {
             index: index,
         });
     }
-    const dropRef = useRef(null);
+    const dropRef = useRef<HTMLDivElement>(null);
     const [{ handlerId }, drop] = useDrop({
         accept: "ingredients",
-        collect(monitor) {
+        collect(monitor:DropTargetMonitor) {
             return {
                 handlerId: monitor.getHandlerId(),
             };
         },
-        hover(item, monitor) {
+        hover(item:{index: number}, monitor: DropTargetMonitor) {
             if (!dropRef.current) {
                 return;
             }
-            const dragIndex = item.index;
+            const dragIndex:number = item.index;
             const hoverIndex = index;
-            if (dragIndex === hoverIndex) {
+            if (!dragIndex || dragIndex === hoverIndex) {
                 return;
             }
-            const hoverBoundingRect = dropRef.current?.getBoundingClientRect();
+            const hoverBoundingRect = dropRef.current.getBoundingClientRect();
             const hoverMiddleY =
                 (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
             const clientOffset = monitor.getClientOffset();
+            if (!clientOffset) return;
             const hoverClientY = clientOffset.y - hoverBoundingRect.top;
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                 return;
@@ -81,11 +88,11 @@ function BurgerConstructorItem({ type, burger, index, locked }) {
         </div>
     );
 }
-BurgerConstructorItem.propTypes = {
+/*BurgerConstructorItem.propTypes = {
     type: PropTypes.string,
     index: PropTypes.number,
     burger: cardPropTypes.isRequired,
     locked: PropTypes.bool
-};
+};*/
 
 export default BurgerConstructorItem;

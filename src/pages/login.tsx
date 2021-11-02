@@ -9,16 +9,16 @@ import {getRefreshTokenFromCookie} from "../services/cookieFunctions";
 
  const LoginPage = () => {
     const dispatch = useDispatch();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
 
-    const onSubmit = (e) => {
+    const onSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(login(email, password));
         setEmail('');
         setPassword('');
     }
-    const { loginSuccess } = useSelector((state) => state.auth);
+    const { loginSuccess } = useSelector((state:any) => state.auth);
 
     if (loginSuccess) {
         return <Redirect to="/" />;

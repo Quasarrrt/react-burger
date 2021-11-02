@@ -1,19 +1,24 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, FC} from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerIngredientsStyles from './BurgerIngredients.module.css'
 import Card from "../Card/Card";
 import PropTypes from "prop-types";
 import {useSelector} from "react-redux";
 import { useInView } from 'react-intersection-observer';
+import {IItem} from "../../services/types/types";
 
-const BurgerIngredients = ({onCardClick}) => {
-    const [current, setCurrent] = React.useState('one')
-    const {  allIngredients,constructorIngredients, isBun } = useSelector((state) => ({
+
+interface IBurgerIngredients {
+    onCardClick: ()=>void;
+}
+const BurgerIngredients: FC<IBurgerIngredients> = ({onCardClick}) => {
+    const [current, setCurrent] = React.useState<string>('one')
+    const {  allIngredients,constructorIngredients, isBun } = useSelector((state:any) => ({
         allIngredients: state.allIngredients.allIngredients,
         constructorIngredients: state.constructorIngredients.constructorIngredients,
         isBun: state.constructorIngredients.isBun,
     }));
-    
+
     const [bunRef, inViewBuns] = useInView({ threshold: 0 });
     const [sauceRef, inViewSauces] = useInView({ threshold: 0 });
     const [mainRef, inViewMains] = useInView({ threshold: 0 });
@@ -28,18 +33,18 @@ const BurgerIngredients = ({onCardClick}) => {
             setCurrent("three");
         }
     }, [inViewBuns, inViewSauces, inViewMains]);
-    const setTab = (tab) => {
+    const setTab = (tab:string) => {
         setCurrent(tab);
         const item = document.getElementById(tab);
         if (item) item.scrollIntoView({ behavior: "smooth" });
     };
-    const bun = allIngredients.filter((item) => {
+    const bun = allIngredients.filter((item:IItem) => {
         return item.type === "bun";
     });
-    const sauce = allIngredients.filter((item) => {
+    const sauce = allIngredients.filter((item:IItem) => {
         return item.type === "sauce";
     });
-    const main = allIngredients.filter((item) => {
+    const main = allIngredients.filter((item:IItem) => {
         return item.type === "main";
     });
 
@@ -69,7 +74,7 @@ const BurgerIngredients = ({onCardClick}) => {
                         Булки
                         </p>
                         <div className={burgerIngredientsStyles.cards}>
-                        {bun&&bun.map((card) => {
+                        {bun&&bun.map((card:IItem) => {
                             return <Card card={card} key={card._id}  onCardClick={onCardClick}   />
                         }
                         )}
@@ -80,7 +85,7 @@ const BurgerIngredients = ({onCardClick}) => {
                         Соусы
                         </p>
                         <div className={burgerIngredientsStyles.cards}>
-                        {sauce.map((card) => {
+                        {sauce.map((card:IItem) => {
                             return <Card card={card} key={card._id} onCardClick={onCardClick}/>
                             }
                         )}
@@ -91,7 +96,7 @@ const BurgerIngredients = ({onCardClick}) => {
                         Начинки
                         </p>
                         <div className={burgerIngredientsStyles.cards}>
-                        {main.map((card) => {
+                        {main.map((card:IItem) => {
                             return <Card card={card} key={card._id}  onCardClick={onCardClick}/>
                         }
                     )}
@@ -103,8 +108,8 @@ const BurgerIngredients = ({onCardClick}) => {
         </section>
     );
 };
-BurgerIngredients.propTypes = {
+/*BurgerIngredients.propTypes = {
     onCardClick: PropTypes.func.isRequired,
-};
+};*/
 
 export default BurgerIngredients;

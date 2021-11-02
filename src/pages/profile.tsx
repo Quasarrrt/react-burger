@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import profileStyles from './profile.module.css';
 import {NavLink, useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -6,16 +6,22 @@ import {getAccessTokenFromCookie, getRefreshTokenFromCookie, setCookie} from "..
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {getUserInfo, logout, updateUserInfo} from "../services/actions/auth";
 
+interface IUserInfo {
+    name: string;
+    email: string,
+    password: string,
+}
+
  const ProfilePage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const [userInfo, setUserInfo] = React.useState({
+    const [userInfo, setUserInfo] = React.useState<IUserInfo>({
         name: '',
         email: '',
         password: '',
     });
-    const [isUserInfoChanged, setIsUserInfoChanged] = React.useState(false);
-    const handleSubmit = (e) => {
+    const [isUserInfoChanged, setIsUserInfoChanged] = React.useState<boolean>(false);
+    const handleSubmit = (e:React.SyntheticEvent<Element, Event>) => {
         e.preventDefault();
         const token = getAccessTokenFromCookie();
         dispatch(updateUserInfo(token, userInfo.name, userInfo.email, userInfo.password));
@@ -32,24 +38,25 @@ import {getUserInfo, logout, updateUserInfo} from "../services/actions/auth";
         setUserInfo({ name: '', email: '', password: '' });
     };
 
-    const handleChangeUserInfo = (e) => {
-        const { name: inputName } = e.target;
+    const handleChangeUserInfo = (e:React.SyntheticEvent<Element, Event>) => {
+        const target = e.target as HTMLInputElement;
+        const { name:  inputName } = target;
         setUserInfo((prev) => ({
             ...prev,
-            [inputName]: e.target.value,
+            [inputName]: target.value,
         }));
         setIsUserInfoChanged(true);
     };
 
-    const { logoutSuccess } = useSelector((state) => state.auth);
-    const { user } = useSelector((state) => state.auth);
+    const { logoutSuccess } = useSelector((state:any) => state.auth);
+    const { user } = useSelector((state:any) => state.auth);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const token = getAccessTokenFromCookie();
         dispatch(getUserInfo(token));
     }, [dispatch]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setUserInfo((prev) => ({
             ...prev,
             name: user.name,
@@ -57,7 +64,7 @@ import {getUserInfo, logout, updateUserInfo} from "../services/actions/auth";
         }));
     }, [user]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (logoutSuccess) {
             history.push('/login');
         }

@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import styles from "./register.module.css";
 import {Input, PasswordInput, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import {Link, Redirect, useHistory} from 'react-router-dom';
@@ -9,19 +9,19 @@ import {getRefreshTokenFromCookie} from "../services/cookieFunctions";
 const RegisterPage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [name, setName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const isLogin = !!getRefreshTokenFromCookie();
-    const { registerSuccess } = useSelector((state) => state.auth);
-    const handleSubmit = (e) => {
+    const { registerSuccess } = useSelector((state:any) => state.auth);
+    const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(register(email, password, name));
         setEmail('');
         setPassword('');
         setName('');
     };
-    React.useEffect(() => {
+    useEffect(() => {
         if (registerSuccess) {
             history.push('/login');
         }

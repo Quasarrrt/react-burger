@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, FC} from 'react';
 import {  CurrencyIcon, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from './BurgerConstructor.module.css';
 import PropTypes from 'prop-types';
@@ -8,23 +8,26 @@ import {getOrderNum, SET_ORDER_ERROR} from "../../services/actions/order";
 import BurgerConstructorItems from "../BurgerConstructorItems/BurgerConstructorItems";
 import {useMemo} from "react";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 import {getRefreshTokenFromCookie} from "../../services/cookieFunctions";
-import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
+import { History } from 'history';
+import {IItem} from "../../services/types/types";
 
+interface IBurgerConstructor {
+    history : History
+}
 
-const BurgerConstructor = ({history}) => {
-    const { loginSuccess } = useSelector((state) => state.auth);
+const BurgerConstructor: FC<IBurgerConstructor> = ({history}) => {
+    const { loginSuccess } = useSelector((state:any) => state.auth);
     const isRefreshToken = getRefreshTokenFromCookie();
     const dispatch=useDispatch();
-    const { constructorIngredients, isBun } = useSelector((state) => ({
+    const { constructorIngredients, isBun } = useSelector((state:any) => ({
         constructorIngredients: state.constructorIngredients.constructorIngredients,
         isBun: state.constructorIngredients.isBun,
 
     }));
 
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState<boolean>(false)
 
     const handleCloseModal = () => {
         setIsOpen(false);
@@ -34,7 +37,7 @@ const BurgerConstructor = ({history}) => {
             if(isBun!==null){
                 if (isBun._id) {
             const ingredientsIds = [
-                ...constructorIngredients.map((element) => element._id),
+                ...constructorIngredients.map((element:{ _id: string|undefined; }) => element._id),
                 isBun._id,
             ];
             dispatch(getOrderNum(ingredientsIds, setIsOpen));
@@ -64,7 +67,7 @@ const BurgerConstructor = ({history}) => {
     )
 
     const totalPrice = useMemo(() => {
-        return constructorIngredients.reduce(function (acc, item) {
+        return constructorIngredients.reduce(function (acc:number, item:IItem ) {
             let totalPrice = item.price;
             if (item.type === 'bun') {
                 totalPrice += item.price;
@@ -86,7 +89,6 @@ const BurgerConstructor = ({history}) => {
                         </div>
                         
                         <Button type="primary" size="large" onClick={()=>{
-                            //onOrderClick();
                             orderSend();
                         }}>
                             Оформить заказ
@@ -101,8 +103,8 @@ const BurgerConstructor = ({history}) => {
     );
 };
 
-BurgerConstructor.propTypes = {
+/*BurgerConstructor.propTypes = {
   history: PropTypes.object.isRequired,
-};
+};*/
 
 export default BurgerConstructor;

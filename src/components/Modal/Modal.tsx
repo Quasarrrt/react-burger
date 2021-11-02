@@ -5,10 +5,13 @@ import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import {useEffect} from "react";
 import PropTypes from "prop-types";
-
-
-function Modal({ open, children, onClose, title }) {
-    const onKeydown = (event) => {
+interface IModal {
+    open: boolean;
+    onClose: () => void;
+    title:string;
+}
+const Modal: React.FC<IModal>= ({ open, children, onClose, title })=>{
+    const onKeydown = (event:KeyboardEvent) => {
         if(event.key === 'Escape'){
             onClose()
         }
@@ -35,15 +38,15 @@ function Modal({ open, children, onClose, title }) {
                 {children}
             </div>
         </>,
-        document.getElementById('portal')
+        document.getElementById('portal')!
     )
 }
 
-Modal.propTypes = {
+/*Modal.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
     title: PropTypes.string.isRequired,
-};
+};*/
 
 export default Modal;
