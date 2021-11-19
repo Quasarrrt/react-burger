@@ -6,7 +6,6 @@ import {useSelector} from "../../services/hooks";
 
 const OrderDetails = () => {
     const orderNumber = useSelector((store) => store.order.orderNumber);
-
     return (
         <div className={stylesOrderDetails.orderWrapper}>
 

@@ -5,17 +5,24 @@ export const WS_USER_ORDERS_URL = 'wss://norma.nomoreparties.space/orders';
 export const handleResponse=(res: Response) =>{
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
-const headers= { 'Content-Type': 'application/json'};
+
 export const ingredientsRequest = async () => {
     return await fetch(`${apiUrl}/ingredients`)
 };
-export const getOrder = async (orderItems:string[]) => {
+export const getOrder = async (orderItems:string[], token: string) => {
     return await fetch(`${apiUrl}/orders`, {
         method: 'POST',
-        headers,
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify({ ingredients:orderItems })
     });
 };
+
+
+
+
 class Api {
     _headers: {};
     _serverUrl: string;

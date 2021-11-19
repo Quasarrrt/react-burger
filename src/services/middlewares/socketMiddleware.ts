@@ -1,9 +1,9 @@
 import type {AnyAction, Middleware, MiddlewareAPI} from 'redux';
-import {AppDispatch, RootState, wsActions} from "../store";
+import { wsActions} from "../store";
 import {getAccessTokenFromCookie} from "../cookieFunctions";
 
 export const socketMiddleware = (): Middleware => {
-    return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
+    return (store: MiddlewareAPI) => {
         let socket: WebSocket | null = null;
 
         return (next: (a: AnyAction) => void) => (action: AnyAction) => {
@@ -40,9 +40,10 @@ export const socketMiddleware = (): Middleware => {
                     socket.send(JSON.stringify(message));
                 }
 
+
             }
 
             next(action);
         };
-    });
+    };
 };

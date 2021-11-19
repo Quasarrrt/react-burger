@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavLink, useHistory} from 'react-router-dom';
+import { useHistory} from 'react-router-dom';
 import {useSelector, useDispatch} from "../services/hooks";
 
 import profileOrderStyles from './profile-orders.module.css'
@@ -29,7 +29,7 @@ export const ProfileOrdersPage: React.FC<IProfileOrdersPage> = ({ onCardOrderCli
     const { user } = useSelector((state) => state.auth);
     const {ordersData}:{ordersData: TOrders} = useSelector((state) => state.webSocket);
 
-    const [userInfo, setUserInfo] = React.useState<IUserInfo>({
+    const [, setUserInfo] = React.useState<IUserInfo>({
         name: '',
         email: '',
         password: '',
@@ -80,6 +80,7 @@ export const ProfileOrdersPage: React.FC<IProfileOrdersPage> = ({ onCardOrderCli
                             {ordersData.orders.map((order: TOrder) => {
                                 return <CardOrder order={order} key={order._id} onCardOrderClick={onCardOrderClick} />;
                             })}
+
                         </ul>
                     )}
             </div>

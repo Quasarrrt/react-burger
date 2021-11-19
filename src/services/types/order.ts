@@ -3,7 +3,7 @@ export const GET_ORDER_SUCCESS:'GET_ORDER_SUCCESS'= 'GET_ORDER_SUCCESS';
 export const SET_ORDER_ERROR:'SET_ORDER_ERROR'='SET_ORDER_ERROR';
 
 export type TOrderState = {
-    orderNumber: number,
+    orderNumber: string,
     orderRequest: boolean,
     orderFailed: boolean,
 };
@@ -14,7 +14,7 @@ export interface IGetOrderNumberRequest {
 
 export interface IGetOrderNumberSuccess {
     readonly type: typeof GET_ORDER_SUCCESS;
-    orderNumber: number;
+    orderNumber: string;
 }
 
 export interface IGetOrderNumberError {

@@ -3,7 +3,6 @@ import { useSelector } from '../../services/hooks';
 import orderInfoStyles from './OrderInfo.module.css';
 import {TItem} from "../../services/types/otherTypes";
 import {TOrders, TOrder} from "../../services/types/ws";
-import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import Price from "../Price/Price";
 interface IOrderInfo {
     ordersData: TOrders | null;

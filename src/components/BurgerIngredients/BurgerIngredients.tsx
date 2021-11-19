@@ -1,8 +1,7 @@
-import React, {useEffect, useMemo, FC} from 'react';
+import React, {useEffect,  FC} from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerIngredientsStyles from './BurgerIngredients.module.css'
 import Card from "../Card/Card";
-import PropTypes from "prop-types";
 import {useSelector} from "../../services/hooks";
 import { useInView } from 'react-intersection-observer';
 import {TItem} from "../../services/types/otherTypes";

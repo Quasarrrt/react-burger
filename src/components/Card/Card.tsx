@@ -1,12 +1,11 @@
 import React from 'react';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import cardStyles  from './Card.module.css'
-import {cardPropTypes} from "../../propTypes/propTypes";
-import PropTypes from "prop-types";
+
 import {useDispatch, useSelector} from "../../services/hooks";
 
 import {ADD_VIEWED_INGREDIENT_DATA} from "../../services/types/viewedIngredient";
-import {DragSourceMonitor, useDrag} from "react-dnd";
+import { useDrag} from "react-dnd";
 import {Link, useLocation} from "react-router-dom";
 import {TItem} from "../../services/types/otherTypes";
 interface ICard {
@@ -18,7 +17,7 @@ const Card : React.FC<ICard> =  ({card, onCardClick}) => {
     const dispatch=useDispatch();
     const { constructorIngredients, isBun } :{ constructorIngredients: TItem[], isBun: TItem } = useSelector((state) => (
         state.constructorIngredients));
-    const [{isDrag}, dragRef] = useDrag({
+    const [, dragRef] = useDrag({
         type: 'item',
         item: card,
         collect: (monitor) => ({
@@ -32,7 +31,7 @@ const Card : React.FC<ICard> =  ({card, onCardClick}) => {
         });
         onCardClick(card);
         return false;
-    };
+    }
 
     const count = card.type === 'bun' && isBun?._id === card._id ? 2 : card.type !== 'bun' ? constructorIngredients.filter(
             (item)=> item._id === card._id).length

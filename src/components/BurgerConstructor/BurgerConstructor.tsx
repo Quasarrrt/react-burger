@@ -1,7 +1,6 @@
 import React, {useState, FC} from 'react';
 import {  CurrencyIcon, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from './BurgerConstructor.module.css';
-import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from "../../services/hooks";
 import {RESET_CONSTRUCTOR} from '../../services/types/contructorIngredients'
 import {getOrderNum} from "../../services/actions/order";

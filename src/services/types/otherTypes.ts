@@ -16,13 +16,6 @@ export type TItem = {
    key?: string;
     index: number;
 };
-export type TBackgroundOrders = {
-    hash: string;
-    key?: string | undefined;
-    pathname: string;
-    search: string;
-    state: null;
-};
 
 export type TLocationState = {
     from?: Location;

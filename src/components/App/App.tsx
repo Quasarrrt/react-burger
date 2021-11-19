@@ -12,12 +12,11 @@ import {useDispatch} from "react-redux";
 import {getIngredients} from "../../services/actions/allIngredients";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import {Router, Route, Switch, useHistory, useLocation, useParams} from "react-router-dom";
+import { Route, Switch, useHistory, useLocation} from "react-router-dom";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import ForgotPasswordPage from "../../pages/forgot-password";
 import ResetPasswordPage from "../../pages/reset-password";
 import LoginPage from "../../pages/login";
-import {ProfileOrderPage} from "../../pages/profile-order";
 import ProfilePage from "../../pages/profile";
 import IngredientDetailsPage from "../../pages/ingredient-details"
 import {ProfileOrdersPage} from "../../pages/profile-orders";
@@ -28,8 +27,6 @@ import {setOrderDetails} from "../../services/actions/orderDetails";
 import OrderInfo from "../OrderInfo/OrderInfo";
 import {useSelector} from "../../services/hooks";
 import {getOrdersData} from "../../services/actions/ordersData";
-import Orders from "../Orders/Orders";
-import CardOrder from "../CardOrder/CardOrder";
 function App() {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -50,8 +47,9 @@ function App() {
     const history = useHistory();
 
     let location = useLocation<TLocationState>();
-    let background =(history.action === 'PUSH' || history.action === 'REPLACE') && location.state && location.state.background;
-    let backgroundOrders =(history.action === 'PUSH' || history.action === 'REPLACE') && location.state && location.state.backgroundOrders;
+    let action=(history.action === 'PUSH' || history.action === 'REPLACE');
+    let background = action && location.state && location.state.background;
+    let backgroundOrders =action && location.state && location.state.backgroundOrders;
 
     const { orderDetails } = useSelector((state) => state.orderDetails);
     const handleCardOrderClick = (order: TOrder) => {
@@ -113,7 +111,7 @@ function App() {
             <ProfileOrdersPage  onCardOrderClick={handleCardOrderClick}  />
         </ProtectedRoute>
         <ProtectedRoute path="/profile/orders/:id" exact={true}>
-            <ProfileOrderPage />
+            <OrderInfoPage />
         </ProtectedRoute>
         <Route path="/ingredients/:id" exact={true}>
             <IngredientDetailsPage />

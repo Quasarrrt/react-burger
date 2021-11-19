@@ -1,10 +1,8 @@
 import {ConstructorElement, DragIcon,} from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 import {useDispatch} from "../../services/hooks";
-
 import {DropTargetMonitor, useDrag, useDrop} from "react-dnd";
 import { useRef, FC } from "react";
-import {MOVE_CONSTRUCTOR_INGREDIENTS, DELETE_CONSTRUCTOR_INGREDIENTS} from '../../services/types/contructorIngredients'
+import {MOVE_CONSTRUCTOR_INGREDIENTS} from '../../services/types/contructorIngredients'
 import constructorItemStyles from './BurgerConstructorItem.module.css'
 import {TItem} from "../../services/types/otherTypes";
 import {deleteConstructorIngredients} from "../../services/actions/constructorIngredients";
@@ -58,7 +56,7 @@ const BurgerConstructorItem: FC<IBurgerConstructorItem>=({ type, burger, index, 
             item.index = hoverIndex;
         },
     });
-    const [{ isDragging }, drag] = useDrag({
+    const [, drag] = useDrag({
         type: "ingredients",
         item: () => {
             return { burger, index };

@@ -2,8 +2,6 @@ import constructorItemsStyles from './BurgerConstructorItems.module.css'
 import {useSelector} from "../../services/hooks";
 import { useDrop } from "react-dnd";
 import {useDispatch} from "../../services/hooks";
-import {ADD_CONSTRUCTOR_INGREDIENTS, ADD_CONSTRUCTOR_INGREDIENTS_BUN} from "../../services/types/contructorIngredients";
-import { v4 as uuidv4 } from "uuid";
 import BurgerConstructorItem from "../BurgerConstructorItem/BurgerConstructorItem";
 import {TItem} from "../../services/types/otherTypes";
 import {addBunConstructorIngredients, addConstructorIngredients} from "../../services/actions/constructorIngredients";

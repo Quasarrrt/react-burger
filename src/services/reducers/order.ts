@@ -2,7 +2,7 @@ import {GET_ORDER_REQUEST, GET_ORDER_SUCCESS, SET_ORDER_ERROR, TOrderActions, TO
 
 export const initialStateOrder:  TOrderState={
 
-    orderNumber: 0,
+    orderNumber: "....",
     orderRequest: false,
     orderFailed: false,
 };
@@ -11,6 +11,7 @@ export const orderReducer = (state = initialStateOrder, action: TOrderActions) =
         case GET_ORDER_REQUEST: {
             return {
                 ...state,
+                orderNumber: initialStateOrder.orderNumber ,
                 orderRequest: true,
                 orderFailed: false,
             };

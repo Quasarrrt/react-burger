@@ -1,13 +1,12 @@
-import api, {getOrder} from "../api/api";
+import  {getOrder} from "../api/api";
 import {GET_ORDER_REQUEST, GET_ORDER_SUCCESS, SET_ORDER_ERROR} from "../types/order";
 import {AppDispatch, AppThunk} from "../store";
-import {TOrder} from "../types/ws";
 
-export const getOrderNum: AppThunk =(orderItems: string[]) =>  (dispatch: AppDispatch)=>{
+export const getOrderNum: AppThunk =(orderItems: string[], token: string) =>  (dispatch: AppDispatch)=>{
         dispatch({
             type: GET_ORDER_REQUEST,
         });
-        getOrder(orderItems)
+        getOrder(orderItems, token)
             .then(res => {
                 if (res.ok) {
                     return res.json();

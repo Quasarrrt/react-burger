@@ -1,11 +1,11 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+/*import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from '../services/hooks';
 import OrderInfo from '../components/OrderInfo/OrderInfo';
 import {getUserOrdersData} from "../services/actions/userOrdersData";
 import {getAccessTokenFromCookie} from "../services/cookieFunctions";
-
 import styles from './profile-order.module.css';
+import {getUserInfo} from "../services/actions/auth";
 
 export const ProfileOrderPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -15,14 +15,16 @@ export const ProfileOrderPage: React.FC = () => {
 
     React.useEffect(() => {
         const token = getAccessTokenFromCookie();
+        dispatch(getUserInfo(token));
         dispatch(getUserOrdersData(token));
     }, [dispatch]);
 
+    console.log(userOrdersData);
     return (
         <div className={styles.orderInfo}>
-
-                <OrderInfo ordersData={userOrdersData} id={id} orderDetailsData={null} />
-
+            {userOrdersData ? (
+                <OrderInfo ordersData={ userOrdersData } id={id} orderDetailsData={null} />
+                ):(<></>)}
         </div>
     );
-};
+};*/

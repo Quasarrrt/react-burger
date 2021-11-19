@@ -4,7 +4,6 @@ import modalStyles from './Modal.module.css'
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import {useEffect} from "react";
-import PropTypes from "prop-types";
 interface IModal {
     open: boolean;
     onClose: (isGoBack: boolean) => void;

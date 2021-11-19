@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import profileStyles from './profile.module.css';
-import {NavLink, useHistory} from "react-router-dom";
+import { useHistory} from "react-router-dom";
 import {useSelector, useDispatch} from "../services/hooks";
 import {getAccessTokenFromCookie, getRefreshTokenFromCookie, setCookie} from "../services/cookieFunctions";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
@@ -30,7 +30,7 @@ export interface IUserInfo{
         setIsUserInfoChanged(false);
     };
 
-    const handleLogout = () => {
+     const handleLogout = () => {
         const token = getRefreshTokenFromCookie();
         dispatch(logout(token));
         setCookie({
