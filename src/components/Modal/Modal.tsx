@@ -7,31 +7,34 @@ import {useEffect} from "react";
 import PropTypes from "prop-types";
 interface IModal {
     open: boolean;
-    onClose: () => void;
+    onClose: (isGoBack: boolean) => void;
     title:string;
+    isGoBack: boolean;
 }
-const Modal: React.FC<IModal>= ({ open, children, onClose, title })=>{
+const Modal: React.FC<IModal>= ({ open, children, onClose, title,isGoBack })=>{
     const onKeydown = (event:KeyboardEvent) => {
         if(event.key === 'Escape'){
-            onClose()
+            onClose(isGoBack)
         }
     }
      useEffect(() => {
          document.addEventListener('keydown', onKeydown)
          return () => document.removeEventListener('keydown', onKeydown)
-     })
+     },)
     if (!open) return null
-
+    const close=() => {
+        onClose(isGoBack);
+    }
     return ReactDom.createPortal(
         <>
 
-            <ModalOverlay onClose={onClose}/>
+            <ModalOverlay onClose={close}/>
             <div className={["pr-10 pl-10 pt-10", modalStyles.modalHeader].join(' ')}>
                 <div className={modalStyles.modalHeaderWrapper}>
                     <h2 className={["text text_type_main-large", modalStyles.headerText].join(' ')}>
                         {title}
                     </h2>
-                    <button onClick={onClose} className={modalStyles.button}>
+                    <button onClick={close} className={modalStyles.button}>
                         <CloseIcon type="primary" />
                     </button>
                 </div>

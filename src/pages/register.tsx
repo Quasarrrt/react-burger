@@ -1,8 +1,8 @@
 import React, { useState, useEffect} from 'react';
-import styles from "./register.module.css";
+import registerStyles from "./register.module.css";
 import {Input, PasswordInput, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import {Link, Redirect, useHistory} from 'react-router-dom';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector, useDispatch} from "../services/hooks";
 import {register} from '../services/actions/auth';
 import {getRefreshTokenFromCookie} from "../services/cookieFunctions";
 
@@ -13,7 +13,7 @@ const RegisterPage = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const isLogin = !!getRefreshTokenFromCookie();
-    const { registerSuccess } = useSelector((state:any) => state.auth);
+    const { registerSuccess } = useSelector((state) => state.auth);
     const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(register(email, password, name));
@@ -31,11 +31,9 @@ const RegisterPage = () => {
             {isLogin ? (
                 <Redirect to="/" />
             ) : (
-        <div className={styles.loginWrapper}>
-            <div className={styles.loginContent}>
-                <p className={`text text_type_main-medium ${styles.formTitle}`}>Регистрация</p>
-                <form className={styles.form} onSubmit={handleSubmit}>
-                    <div className={styles.inputWrapper}>
+                <form className={registerStyles.form} noValidate onSubmit={handleSubmit}>
+                    <h2 className="text text_type_main-medium mb-6">Регистрация</h2>
+                    <div className={registerStyles.formContainer}>
                         <Input
                             type={'text'}
                             placeholder={'Имя'}
@@ -44,8 +42,6 @@ const RegisterPage = () => {
                             size={'default'}
                             value={name}
                         />
-                    </div>
-                    <div className={styles.inputWrapper}>
                         <Input
                             type={'email'}
                             placeholder={'E-mail'}
@@ -54,26 +50,23 @@ const RegisterPage = () => {
                             size={'default'}
                             value={email}
                         />
-                    </div>
-                    <div className={styles.inputWrapper}>
                         <PasswordInput
                             name={'password'}
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                         />
-                    </div>
-                    <div className={styles.submitWrapper}>
+                    <div className={registerStyles.submitWrapper}>
                         <Button type="primary" size="medium">
                             Зарегистрироваться
                         </Button>
                     </div>
-                </form>
+                    </div>
+
                 <div>
-                    <p className={`text text_type_main-default ${styles.paragraph}`}>Уже зарегистрированы? <Link
-                        className={styles.link} to="/login">Войти</Link></p>
+                    <p className={`text text_type_main-default mt-20 ${registerStyles.paragraph}`}>Уже зарегистрированы? <Link
+                        className={registerStyles.link} to="/login">Войти</Link></p>
                 </div>
-            </div>
-        </div>
+                </form>
             )}
         </>
     );

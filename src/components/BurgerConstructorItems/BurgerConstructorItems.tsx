@@ -1,42 +1,31 @@
 import constructorItemsStyles from './BurgerConstructorItems.module.css'
-import { useSelector } from "react-redux";
+import {useSelector} from "../../services/hooks";
 import { useDrop } from "react-dnd";
-import { useDispatch } from "react-redux";
-import {
-    ADD_CONSTRUCTOR_INGREDIENTS,
-    ADD_CONSTRUCTOR_INGREDIENTS_BUN
-} from "../../services/actions/constructorIngredients";
+import {useDispatch} from "../../services/hooks";
+import {ADD_CONSTRUCTOR_INGREDIENTS, ADD_CONSTRUCTOR_INGREDIENTS_BUN} from "../../services/types/contructorIngredients";
 import { v4 as uuidv4 } from "uuid";
 import BurgerConstructorItem from "../BurgerConstructorItem/BurgerConstructorItem";
-import {IItem} from "../../services/types/types";
+import {TItem} from "../../services/types/otherTypes";
+import {addBunConstructorIngredients, addConstructorIngredients} from "../../services/actions/constructorIngredients";
 
 
 function BurgerConstructorItems(){
 
-    const { constructorIngredients, isBun } = useSelector((state:any) => ({
-        constructorIngredients: state.constructorIngredients.constructorIngredients,
-        isBun: state.constructorIngredients.isBun,
-
-    }));
+    const { constructorIngredients, isBun } :{ constructorIngredients: TItem[], isBun: TItem } = useSelector((state) => (
+     state.constructorIngredients));
     const dispatch = useDispatch();
     const [, dropTarget] = useDrop({
         accept: "item",
-        drop(item:IItem) {
+        drop(item:TItem) {
             onDropHandler(item);
         },
     });
 
-    function onDropHandler(item:IItem) {
+    function onDropHandler(item:TItem) {
         if (item.type === "bun") {
-            dispatch({
-                type: ADD_CONSTRUCTOR_INGREDIENTS_BUN,
-                item: item,
-            });
+            dispatch(addBunConstructorIngredients(item));
         } else {
-            dispatch({
-                type: ADD_CONSTRUCTOR_INGREDIENTS,
-                item: { ...item, key: uuidv4() },
-            });
+            dispatch(addConstructorIngredients(item));
         }
     }
 
@@ -55,7 +44,7 @@ function BurgerConstructorItems(){
                 </li>
                 <div className={ constructorItemsStyles.scroll}>
                     {constructorIngredients && (
-                            constructorIngredients.filter((item:IItem) => item.type !== "bun").map((item:IItem, index:number) => {
+                            constructorIngredients.filter((item:TItem) => item.type !== "bun").map((item:TItem, index:number) => {
                                     return (
                                         <BurgerConstructorItem
                                             key={item.key}

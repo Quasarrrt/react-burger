@@ -1,26 +1,20 @@
-.loginWrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 180px;
-}
-.loginContent {
-    width: 480px;
-}
-
-.formTitle {
-    text-align: center;
-}
-
 .form {
+    margin: 180px 0 0;
     display: flex;
-    flex-wrap: wrap;
     flex-direction: column;
-    margin: 24px 0 80px 0;
     align-items: center;
 }
 
+.formContainer {
+    margin: auto;
+    width: 480px;
+    display: grid;
+    grid-template-rows: repeat(auto-fit, 1fr);
+    row-gap: 24px;
+}
 .submitWrapper {
-    text-align: center;
+    margin: auto;
+    width: fit-content;
 }
 
 .text {
@@ -28,6 +22,14 @@
     text-align: center;
 }
 .link {
-    color: #4C4CFF;
+    color: #4c4cff;
     text-decoration: none;
+}
+
+:global(.input__container) {
+    width: 100%;
+}
+
+:global(.input) {
+    width: 100%;
 }

@@ -1,31 +1,32 @@
 import {
-    LOGIN_REQUEST,
-    LOGIN_SUCCESS,
-    LOGIN_FAIL,
-    LOGOUT_REQUEST,
-    LOGOUT_SUCCESS,
-    LOGOUT_FAIL,
-    REGISTER_REQUEST,
-    REGISTER_SUCCESS,
-    REGISTER_FAIL,
-    FORGOT_PASSWORD_REQUEST,
-    FORGOT_PASSWORD_SUCCESS,
     FORGOT_PASSWORD_FAIL,
-    RESET_PASSWORD_REQUEST,
-    RESET_PASSWORD_SUCCESS,
-    RESET_PASSWORD_FAIL,
+    FORGOT_PASSWORD_REQUEST,
+    FORGOT_PASSWORD_SUCCESS, GET_USER_FAIL,
     GET_USER_REQUEST,
     GET_USER_SUCCESS,
-    GET_USER_FAIL,
-    UPDATE_USER_REQUEST,
-    UPDATE_USER_SUCCESS,
-    UPDATE_USER_FAIL,
+    LOGIN_FAIL,
+    LOGIN_REQUEST,
+    LOGIN_SUCCESS,
+    LOGOUT_FAIL,
+    LOGOUT_REQUEST,
+    LOGOUT_SUCCESS,
+    REFRESH_TOKEN_FAIL,
     REFRESH_TOKEN_REQUEST,
     REFRESH_TOKEN_SUCCESS,
-    REFRESH_TOKEN_FAIL
-} from '../actions/auth';
+    REGISTER_FAIL,
+    REGISTER_REQUEST,
+    REGISTER_SUCCESS,
+    RESET_PASSWORD_FAIL,
+    RESET_PASSWORD_REQUEST,
+    RESET_PASSWORD_SUCCESS,
+    TAuthActions,
+    TAuthState,
+    UPDATE_USER_FAIL,
+    UPDATE_USER_REQUEST,
+    UPDATE_USER_SUCCESS
+} from '../types/auth'
 
-const authInitialState = {
+const authInitialState: TAuthState = {
     user: {
         email: '',
         name: '',
@@ -58,7 +59,7 @@ const authInitialState = {
     updateUserInfoError: false,
 };
 
-export const authReducer = (state = authInitialState, action) => {
+export const authReducer = (state = authInitialState, action:TAuthActions) :TAuthState=> {
     switch (action.type) {
         case REGISTER_REQUEST: {
             return {

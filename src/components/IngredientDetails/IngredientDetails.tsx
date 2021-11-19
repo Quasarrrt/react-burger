@@ -1,10 +1,10 @@
 import React from 'react';
 import stylesIngredientDetails from "./IngredientDetails.module.css"
-import {useSelector} from "react-redux";
-import {useDispatch} from "react-redux";
+import {useSelector, useDispatch} from "../../services/hooks";
 import  {useEffect} from "react";
 import { useParams } from "react-router-dom";
 import {getViewedIngredient} from "../../services/actions/viewedIngredient";
+import {TItem} from "../../services/types/otherTypes";
 
 
 
@@ -12,16 +12,16 @@ const IngredientDetails = () => {
 
     const { id } = useParams<{id: string}>();
     const dispatch = useDispatch();
-    const ingredients = useSelector((state:any) => state.allIngredients);
+    const {  allIngredients }:{ allIngredients: TItem[] } = useSelector((state) => (state.allIngredients));
 
     useEffect(() => {
-            const itemData = ingredients.allIngredients?.find((item: { _id: string|undefined; }) => item._id === id);
+            const itemData = allIngredients.find((item) => item._id === id);
             itemData && dispatch(getViewedIngredient(itemData));
-        }, [id,ingredients.allIngredients]
+        }, [id, allIngredients, dispatch]
     );
 
 
-    const currentIngredient = useSelector((state:any) => state.viewedIngredient.currentIngredient);
+    const {currentIngredient}:{currentIngredient: TItem} = useSelector((state) => state.viewedIngredient);
 
 
 

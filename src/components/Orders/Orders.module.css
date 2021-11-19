@@ -1,0 +1,19 @@
+.orders {
+    max-height: 812px;
+    overflow-y: auto;
+    margin: 0;
+    list-style: none;
+    padding: 0;
+    display: grid;
+    row-gap: 16px;
+    padding-right: 8px;
+}
+
+.orders::-webkit-scrollbar {
+    width: 8px;
+    background-color: #2f2f37;
+}
+
+.orders::-webkit-scrollbar-thumb {
+    background-color: #8585ad;
+}

@@ -1,40 +1,19 @@
 import {getAccessTokenFromCookie, getRefreshTokenFromCookie, setCookie} from "../cookieFunctions";
-import authApi from "../api/api";
+import authApi from "../api/authApi";
+import {AppDispatch, AppThunk, TAppActions} from "../store";
+import {UPDATE_USER_REQUEST, UPDATE_USER_FAIL, UPDATE_USER_SUCCESS,
+    GET_USER_FAIL, GET_USER_REQUEST, GET_USER_SUCCESS,
+REFRESH_TOKEN_FAIL, REFRESH_TOKEN_REQUEST, REFRESH_TOKEN_SUCCESS,
+    LOGOUT_REQUEST, LOGOUT_FAIL, LOGOUT_SUCCESS,
+    REGISTER_FAIL, REGISTER_REQUEST, REGISTER_SUCCESS,
+    LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS,
+    FORGOT_PASSWORD_FAIL, FORGOT_PASSWORD_SUCCESS, FORGOT_PASSWORD_REQUEST,
+    RESET_PASSWORD_REQUEST, RESET_PASSWORD_FAIL, RESET_PASSWORD_SUCCESS,
+} from "../types/auth";
 
-export const LOGIN_REQUEST = 'LOGIN_REQUEST';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAIL = 'LOGIN_FAIL';
 
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
-export const LOGOUT_FAIL = 'LOGOUT_FAIL';
-
-export const REGISTER_REQUEST = 'REGISTER_REQUEST';
-export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
-export const REGISTER_FAIL = 'REGISTER_FAIL';
-
-export const FORGOT_PASSWORD_REQUEST = 'FORGOT_PASSWORD_REQUEST';
-export const FORGOT_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS';
-export const FORGOT_PASSWORD_FAIL = 'FORGOT_PASSWORD_FAIL';
-
-export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
-export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
-export const RESET_PASSWORD_FAIL = 'RESET_PASSWORD_FAIL';
-
-export const GET_USER_REQUEST = 'GET_USER_REQUEST';
-export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
-export const GET_USER_FAIL = 'GET_USER_FAIL';
-
-export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
-export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
-export const UPDATE_USER_FAIL = 'UPDATE_USER_FAIL';
-
-export const REFRESH_TOKEN_REQUEST = 'REFRESH_TOKEN_REQUEST';
-export const REFRESH_TOKEN_SUCCESS = 'REFRESH_TOKEN_SUCCESS';
-export const REFRESH_TOKEN_FAIL = 'REFRESH_TOKEN_ERROR';
-
-export function register(email, password, name) {
-    return function (dispatch) {
+export const register: AppThunk = (email: string, password: string, name: string) =>
+    (dispatch: AppDispatch) => {
         dispatch({ type: REGISTER_REQUEST });
 
         return authApi
@@ -55,10 +34,10 @@ export function register(email, password, name) {
                 dispatch({ type: REGISTER_FAIL });
             });
     };
-}
 
-export function login(email, password) {
-    return function (dispatch) {
+
+export const login :AppThunk = (email: string, password: string) => (dispatch: AppDispatch) => {
+
         dispatch({ type: LOGIN_REQUEST });
 
         return authApi
@@ -79,10 +58,8 @@ export function login(email, password) {
                 dispatch({ type: LOGIN_FAIL });
             });
     };
-}
 
-export function forgotPassword(email) {
-    return function (dispatch) {
+export const forgotPassword: AppThunk = (email:string) => (dispatch: AppDispatch) => {
         dispatch({ type: FORGOT_PASSWORD_REQUEST });
 
         return authApi
@@ -100,10 +77,10 @@ export function forgotPassword(email) {
                 dispatch({ type: FORGOT_PASSWORD_FAIL });
             });
     };
-}
 
-export function resetPassword(password, token) {
-    return function (dispatch) {
+
+export const resetPassword: AppThunk = (password: string, token: string) => (dispatch: AppDispatch) => {
+
         dispatch({ type: RESET_PASSWORD_REQUEST });
 
         return authApi
@@ -121,9 +98,8 @@ export function resetPassword(password, token) {
                 dispatch({ type: RESET_PASSWORD_FAIL });
             });
     };
-}
-export function logout(token) {
-    return function (dispatch) {
+export const logout: AppThunk = (token:string) => (dispatch: AppDispatch) =>{
+
         dispatch({ type: LOGOUT_REQUEST });
 
         return authApi
@@ -141,36 +117,38 @@ export function logout(token) {
                 dispatch({ type: LOGOUT_FAIL });
             });
     };
-}
 
-export function refreshToken(token) {
-    return function (dispatch) {
-        dispatch({ type: REFRESH_TOKEN_REQUEST });
 
-        return authApi
-            .refreshToken(token)
-            .then((data) => {
-                if (data.success) {
-                    const accessToken = data.accessToken.split('Bearer ')[1];
-                    const refreshToken = data.refreshToken;
-                    document.cookie = `accessToken=${accessToken}`;
-                    document.cookie = `refreshToken=${refreshToken}`;
-                    dispatch({
-                        type: REFRESH_TOKEN_SUCCESS,
-                        accessToken: accessToken,
-                        refreshToken: refreshToken,
-                    });
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-                dispatch({ type: REFRESH_TOKEN_FAIL });
-            });
-    };
-}
+export const refreshToken: AppThunk =(token: string, next: TAppActions) => (dispatch: AppDispatch) => {
+    dispatch({ type: REFRESH_TOKEN_REQUEST });
 
-export function getUserInfo(token) {
-    return function (dispatch) {
+    return authApi
+        .refreshToken(token)
+        .then((data) => {
+            if (data.success) {
+                const accessToken = data.accessToken.split('Bearer ')[1];
+                const refreshToken = data.refreshToken;
+                document.cookie = `accessToken=${accessToken}`;
+                document.cookie = `refreshToken=${refreshToken}`;
+                dispatch({
+                    type: REFRESH_TOKEN_SUCCESS,
+                    accessToken: accessToken,
+                    refreshToken: refreshToken,
+                });
+            }
+            if (next) {
+                dispatch(next);
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            dispatch({ type: REFRESH_TOKEN_FAIL });
+        });
+};
+
+
+export const getUserInfo: AppThunk = () => (dispatch: AppDispatch| AppThunk) => {
+    const token = getAccessTokenFromCookie();
         dispatch({ type: GET_USER_REQUEST });
 
         return authApi
@@ -188,28 +166,26 @@ export function getUserInfo(token) {
             .catch((err) => {
                 if (err.message === 'jwt expired') {
                     const tokenRefresh = getRefreshTokenFromCookie();
-                    dispatch(refreshToken(tokenRefresh));
-                    const tokenAccess = getAccessTokenFromCookie();
-                    dispatch(getUserInfo(tokenAccess));
+                    dispatch(refreshToken(tokenRefresh, () => getUserInfo()));
                 } else {
                     console.log(err);
                 }
                 dispatch({ type: GET_USER_FAIL });
             });
     };
-}
 
-export function updateUserInfo(token, name, email, password) {
-    return function (dispatch) {
+
+export const updateUserInfo: AppThunk =(token: string, name: string, email: string, password: string) =>
+    (dispatch: AppDispatch | AppThunk) => {
+
         dispatch({ type: UPDATE_USER_REQUEST });
-
-        return authApi
-            .updateUserInfo(token, name, email, password)
+    return authApi
+        .updateUserInfo(token, name, email, password)
             .then((data) => {
                 if (data.success) {
                     dispatch({
                         type: UPDATE_USER_SUCCESS,
-                        user: { name, email, password },
+                        user: {name, email, password},
                     });
                 } else {
                     throw data;
@@ -218,16 +194,14 @@ export function updateUserInfo(token, name, email, password) {
             .catch((err) => {
                 if (err.message === 'jwt expired') {
                     const tokenRefresh = getRefreshTokenFromCookie();
-                    dispatch(refreshToken(tokenRefresh));
-                    const tokenAccess = getAccessTokenFromCookie();
-                    dispatch(updateUserInfo(tokenAccess, name, email, password));
+                    dispatch(refreshToken(tokenRefresh, () => getUserInfo()));
                 } else {
                     console.log(err);
                 }
-                dispatch({ type: UPDATE_USER_FAIL });
+                dispatch({type: UPDATE_USER_FAIL});
             });
     };
-}
+
 
 
 
