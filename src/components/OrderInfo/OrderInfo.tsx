@@ -4,23 +4,27 @@ import orderInfoStyles from './OrderInfo.module.css';
 import {TItem} from "../../services/types/otherTypes";
 import {TOrders, TOrder} from "../../services/types/ws";
 import Price from "../Price/Price";
-import {formatDateFromISOStringToLocaleString} from "../../utils/utils";
 interface IOrderInfo {
-    ordersData: TOrders| null;
+    ordersData: TOrders | null;
     id: string;
     orderDetailsData: TOrder | null;
 
 }
-const OrderInfo: React.FC<IOrderInfo> = ({ ordersData, orderDetailsData, id  }) => {
+const OrderInfo: React.FC<IOrderInfo> = ({ ordersData, orderDetailsData, id }) => {
     const { allIngredients }: { allIngredients: TItem[] } = useSelector(
         (state) => state.allIngredients,
     );
-    const orderInfo: TOrder | null = !ordersData
-        ? orderDetailsData
-        : ordersData.orders.filter(({ _id }: { _id: string }) => {
-            return _id === id;
-        })[0];
 
+   const orderInfo:TOrder | null | TOrder[]= !ordersData
+        ? orderDetailsData
+        : ordersData.orders.filter((item)=>item._id===id)[0];
+
+   console.log('Заказ orderInfo', orderInfo)
+
+    const formatDateFromISOStringToLocaleString = (ISOString: string) => {
+        const dateInMs = Date.parse(ISOString);
+        return new Date(dateInMs).toLocaleString();
+    };
     const date = formatDateFromISOStringToLocaleString(orderInfo ? orderInfo.createdAt : '');
     let price = 0;
 
@@ -36,8 +40,8 @@ const OrderInfo: React.FC<IOrderInfo> = ({ ordersData, orderDetailsData, id  }) 
                 break;
         }
     };
+
     return (
-        orderInfo?(
         <section className={orderInfoStyles.orderInfo}>
             <p className={`${orderInfoStyles.orderNumber} text text_type_digits-default`}>{`#${
                 orderInfo ? orderInfo.number : ''
@@ -57,8 +61,6 @@ const OrderInfo: React.FC<IOrderInfo> = ({ ordersData, orderDetailsData, id  }) 
                                     return ingredient === element._id;
                                 },
                             );
-                            //console.log(ingredientData);
-
 
                             if (ingredientData) {
                                 price += +ingredientData.price;
@@ -93,7 +95,7 @@ const OrderInfo: React.FC<IOrderInfo> = ({ ordersData, orderDetailsData, id  }) 
                 <p className="text text_type_main-default text_color_inactive">{orderInfo ? date : ''}</p>
                 <Price price={price} textType="text_type_digits-default" typeIcon="primary" />
             </div>
-        </section>):null
+        </section>
     );
 };
 

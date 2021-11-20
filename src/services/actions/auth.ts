@@ -1,4 +1,4 @@
-import {getAccessTokenFromCookie, getRefreshTokenFromCookie, setCookie} from "../cookieFunctions";
+import { getRefreshTokenFromCookie, setCookie} from "../cookieFunctions";
 import authApi from "../api/authApi";
 import {AppDispatch, AppThunk, TAppActions} from "../store";
 import {UPDATE_USER_REQUEST, UPDATE_USER_FAIL, UPDATE_USER_SUCCESS,
@@ -50,6 +50,7 @@ export const login :AppThunk = (email: string, password: string) => (dispatch: A
                         accessToken: data.accessToken.split('Bearer ')[1],
                         refreshToken: data.refreshToken,
                     });
+                    localStorage.setItem('token', data.accessToken.split('Bearer ')[1]);
                     setCookie(data);
                 }
             })
@@ -148,30 +149,32 @@ export const refreshToken: AppThunk =(token: string, next: TAppActions) => (disp
 
 
 export const getUserInfo: AppThunk = () => (dispatch: AppDispatch| AppThunk) => {
-    const token = getAccessTokenFromCookie();
+    const token: string|null = localStorage.getItem('token')
         dispatch({ type: GET_USER_REQUEST });
+if(token){
+    return authApi
+        .getUserInfo(token)
+        .then((data) => {
+            if (data.success) {
+                dispatch({
+                    type: GET_USER_SUCCESS,
+                    user: data.user,
+                });
+            } else {
+                throw data;
+            }
+        })
+        .catch((err) => {
+            if (err.message === 'jwt expired') {
+                const tokenRefresh = getRefreshTokenFromCookie();
+                dispatch(refreshToken(tokenRefresh, () => getUserInfo()));
+            } else {
+                console.log(err);
+            }
+            dispatch({ type: GET_USER_FAIL });
+        });
+}
 
-        return authApi
-            .getUserInfo(token)
-            .then((data) => {
-                if (data.success) {
-                    dispatch({
-                        type: GET_USER_SUCCESS,
-                        user: data.user,
-                    });
-                } else {
-                    throw data;
-                }
-            })
-            .catch((err) => {
-                if (err.message === 'jwt expired') {
-                    const tokenRefresh = getRefreshTokenFromCookie();
-                    dispatch(refreshToken(tokenRefresh, () => getUserInfo()));
-                } else {
-                    console.log(err);
-                }
-                dispatch({ type: GET_USER_FAIL });
-            });
     };
 
 

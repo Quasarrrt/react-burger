@@ -46,8 +46,8 @@ function App() {
     );
 
     const history = useHistory();
-    let location = useLocation<TLocationState>();
 
+    let location = useLocation<TLocationState>();
     let action=(history.action === 'PUSH' || history.action === 'REPLACE');
     let background = action && location.state && location.state.background;
     let backgroundOrders =action && location.state && location.state.backgroundOrders;
@@ -56,9 +56,8 @@ function App() {
     const handleCardOrderClick = (order: TOrder) => {
         dispatch(setOrderDetails(order));
         setIsOpen(true);
-        console.log(order);
     };
-    //console.log(orderDetails)
+
     React.useEffect(() => {
         dispatch(getOrdersData());
     }, [dispatch]);
@@ -79,7 +78,7 @@ function App() {
         return (
             <>
             <AppHeader/>
-    <Switch location={background|| backgroundOrders||location}>
+    <Switch location={background || location|| backgroundOrders}>
         <Route path="/" exact={true}>
             <main className={mainStyles.main}>
             <DndProvider backend={HTML5Backend}>
@@ -107,16 +106,16 @@ function App() {
             <OrderFeedPage onCardOrderClick={handleCardOrderClick} />
         </Route>
         <Route path="/feed/:id" exact={true}>
-            <OrderInfoPage  orderDetails={orderDetails} />
+            <OrderInfoPage />
         </Route>
         <ProtectedRoute path="/profile/orders" exact={true}>
             <ProfileOrdersPage  onCardOrderClick={handleCardOrderClick}  />
         </ProtectedRoute>
         <Route path="/profile/orders/:id" exact={true}>
-            <ProfileOrderPage/>
+            <ProfileOrderPage />
         </Route>
         <Route path="/ingredients/:id" exact={true}>
-            <IngredientDetailsPage/>
+            <IngredientDetailsPage />
         </Route>
     </Switch>
 
@@ -131,7 +130,7 @@ function App() {
                 {backgroundOrders&&  (
 
                             <Modal open={isOpen} onClose={handleCloseModal} title=""  isGoBack={true}>
-                                <OrderInfo ordersData={null} id='' orderDetailsData={orderDetails}/>
+                                <OrderInfo ordersData={null} orderDetailsData={orderDetails} id="" />
                             </Modal>
                 )}
 

@@ -5,7 +5,6 @@ import {useSelector, useDispatch} from "../services/hooks";
 import profileOrderStyles from './profile-orders.module.css'
 import {
     setCookie,
-    getAccessTokenFromCookie,
     getRefreshTokenFromCookie,
 } from '../services/cookieFunctions';
 
@@ -46,7 +45,7 @@ export const ProfileOrdersPage: React.FC<IProfileOrdersPage> = ({ onCardOrderCli
 
 
     React.useEffect(() => {
-        const token = getAccessTokenFromCookie();
+        const token=localStorage.getItem('token');
         dispatch(getUserInfo(token));
         dispatch({ type: wsActions.wsStart, wsUrl: `${WS_USER_ORDERS_URL}?token=${token}` });
         return () => {

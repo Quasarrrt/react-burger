@@ -4,15 +4,14 @@ import Price from '../Price/Price';
 import { formatDateFromISOStringToLocaleString } from '../../utils/utils';
 import cardOrderstyles from './CardOrder.module.css';
 import {TOrder} from "../../services/types/ws";
-import {TItem} from "../../services/types/otherTypes";
-
+import {TItem, TLocationState} from "../../services/types/otherTypes";
 interface ICardOrder {
     order: TOrder;
     onCardOrderClick: (order: TOrder) => void;
 }
 
 const CardOrder: React.FC<ICardOrder> = ({ order, onCardOrderClick }) => {
-    const location = useLocation();
+    const location = useLocation<TLocationState>();
     const {allIngredients}:{ allIngredients: TItem[] }  = useSelector((state) => state.allIngredients,
     );
     const date = formatDateFromISOStringToLocaleString(order.createdAt);
@@ -20,13 +19,14 @@ const CardOrder: React.FC<ICardOrder> = ({ order, onCardOrderClick }) => {
 
 
     const handleClick = () => {
-       onCardOrderClick(order);
 
+       onCardOrderClick(order);
     };
 
 
+
     return (
-        <li className={`${cardOrderstyles.cardOrder} p-6`}  onClick={handleClick} >
+        <li className={`${cardOrderstyles.cardOrder} p-6`} >
 
             <Link
                 className={cardOrderstyles.link}
@@ -35,7 +35,7 @@ const CardOrder: React.FC<ICardOrder> = ({ order, onCardOrderClick }) => {
                     state: { backgroundOrders: location },
 
                 }}
-
+                onClick={handleClick}
             >
 
                 <div className={cardOrderstyles.idWithDateContainer}>
