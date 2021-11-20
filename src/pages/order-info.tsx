@@ -18,7 +18,7 @@ export const OrderInfoPage: React.FC = () => {
     return (
         <div className={styles.orderInfo}>
 
-                <OrderInfo ordersData={ordersData} id={id} orderDetailsData={null} />
+                <OrderInfo ordersData={null} id={id} orderDetailsData={null} />
 
         </div>
     );

@@ -4,7 +4,7 @@ import {CLEAR_ORDER_DETAILS, IClearOrderDetails, ISetOrderDetails, SET_ORDER_DET
 export const setOrderDetails = (order: TOrder): ISetOrderDetails => {
     return {
         type: SET_ORDER_DETAILS,
-        order: order,
+        payload: order,
     };
 };
 

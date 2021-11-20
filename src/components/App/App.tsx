@@ -27,6 +27,7 @@ import {setOrderDetails} from "../../services/actions/orderDetails";
 import OrderInfo from "../OrderInfo/OrderInfo";
 import {useSelector} from "../../services/hooks";
 import {getOrdersData} from "../../services/actions/ordersData";
+import {ProfileOrderPage} from "../../pages/profile-order";
 function App() {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -77,7 +78,7 @@ function App() {
         return (
             <>
             <AppHeader/>
-    <Switch location={background || location|| backgroundOrders}>
+    <Switch location={background || backgroundOrders||location}>
         <Route path="/" exact={true}>
             <main className={mainStyles.main}>
             <DndProvider backend={HTML5Backend}>
@@ -110,9 +111,9 @@ function App() {
         <ProtectedRoute path="/profile/orders" exact={true}>
             <ProfileOrdersPage  onCardOrderClick={handleCardOrderClick}  />
         </ProtectedRoute>
-        <ProtectedRoute path="/profile/orders/:id" exact={true}>
-            <OrderInfoPage />
-        </ProtectedRoute>
+        <Route path="/profile/orders/:id" exact={true}>
+            <ProfileOrderPage/>
+        </Route>
         <Route path="/ingredients/:id" exact={true}>
             <IngredientDetailsPage />
         </Route>

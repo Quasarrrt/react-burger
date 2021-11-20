@@ -5,6 +5,8 @@ import { formatDateFromISOStringToLocaleString } from '../../utils/utils';
 import cardOrderstyles from './CardOrder.module.css';
 import {TOrder} from "../../services/types/ws";
 import {TItem, TLocationState} from "../../services/types/otherTypes";
+import {ADD_VIEWED_INGREDIENT_DATA} from "../../services/types/viewedIngredient";
+import {setOrderDetails} from "../../services/actions/orderDetails";
 interface ICardOrder {
     order: TOrder;
     onCardOrderClick: (order: TOrder) => void;
@@ -19,8 +21,9 @@ const CardOrder: React.FC<ICardOrder> = ({ order, onCardOrderClick }) => {
 
 
     const handleClick = () => {
-
+        setOrderDetails(order);
        onCardOrderClick(order);
+        return false;
     };
 
 
@@ -31,7 +34,7 @@ const CardOrder: React.FC<ICardOrder> = ({ order, onCardOrderClick }) => {
             <Link
                 className={cardOrderstyles.link}
                 to={{
-                    pathname: `${location.pathname}/${order._id}`,
+                    pathname: `/profile/orders/${order._id}`,
                     state: { backgroundOrders: location },
 
                 }}

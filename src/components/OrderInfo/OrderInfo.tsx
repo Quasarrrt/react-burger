@@ -14,13 +14,17 @@ const OrderInfo: React.FC<IOrderInfo> = ({ ordersData, orderDetailsData, id }) =
     const { allIngredients }: { allIngredients: TItem[] } = useSelector(
         (state) => state.allIngredients,
     );
+    //console.log(allIngredients);
 
-   const orderInfo: TOrder | null = !ordersData
+   /*const orderInfo: TOrder | null = !ordersData
         ? orderDetailsData
         : ordersData.orders.filter(({ _id }: { _id: string }) => {
             return _id === id;
-        })[0];
-
+        })[0];*/
+    const { orderDetails}:{orderDetails:TOrder}= useSelector((state) => state.orderDetails);
+    //console.log(orderDetails)
+    const orderInfo=(orderDetailsData==null)? orderDetails: orderDetailsData;
+   console.log(orderInfo)
     const formatDateFromISOStringToLocaleString = (ISOString: string) => {
         const dateInMs = Date.parse(ISOString);
         return new Date(dateInMs).toLocaleString();
@@ -61,6 +65,8 @@ const OrderInfo: React.FC<IOrderInfo> = ({ ordersData, orderDetailsData, id }) =
                                     return ingredient === element._id;
                                 },
                             );
+                            console.log(ingredientData);
+
 
                             if (ingredientData) {
                                 price += +ingredientData.price;
