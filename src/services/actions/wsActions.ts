@@ -5,7 +5,12 @@ import {
     WS_GET_ORDERS, WS_SEND_MESSAGE, IWSSendMessage, TOrders, IWSGetOrders
 } from '../types/ws';
 
-
+export const wsGetOrders = (orders: TOrders): IWSGetOrders => {
+    return {
+        type: WS_GET_ORDERS,
+        payload: orders,
+    };
+};
 
 export const wsConnectionSuccess = () => ({
     type: WS_CONNECTION_SUCCESS
@@ -27,9 +32,3 @@ export const wsSendMessage = (message: string): IWSSendMessage => {
     };
 };
 
-export const wsGetOrders = (orders: TOrders): IWSGetOrders => {
-    return {
-        type: WS_GET_ORDERS,
-        payload: orders,
-    };
-};

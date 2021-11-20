@@ -1,22 +1,33 @@
 import {AppDispatch, AppThunk} from "../store";
 import {GET_ORDERS_DATA_ERROR, GET_ORDERS_DATA_REQUEST, GET_ORDERS_DATA_SUCCESS} from "../types/ordersData";
-import api from "../api/api";
-
-
+import {getOrdersDat} from "../api/api";
 
 export const getOrdersData: AppThunk = () => (dispatch: AppDispatch) => {
     dispatch({ type: GET_ORDERS_DATA_REQUEST });
 
-    return api
-        .getOrdersData()
-        .then((data) => {
-            dispatch({
-                type: GET_ORDERS_DATA_SUCCESS,
-                ordersData: data,
-            });
+        getOrdersDat()
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+            return Promise.reject(`Ошибка ${res.status}`);
+        })
+        .then((res) => {
+            if (res && res.success) {
+                dispatch({
+                    type: GET_ORDERS_DATA_SUCCESS,
+                    ordersData: res.data,
+                });
+            } else {
+                dispatch({
+                    type: GET_ORDERS_DATA_ERROR,
+                });
+            }
         })
         .catch((err) => {
-            console.log(err);
-            dispatch({ type: GET_ORDERS_DATA_ERROR });
+            dispatch({
+                type: GET_ORDERS_DATA_ERROR,
+            });
         });
+
 };

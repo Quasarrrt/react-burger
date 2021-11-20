@@ -2,7 +2,8 @@ import type {AnyAction, Middleware, MiddlewareAPI} from 'redux';
 import { wsActions} from "../store";
 import {getAccessTokenFromCookie} from "../cookieFunctions";
 
-export const socketMiddleware = (): Middleware => {
+export type TWSActions = typeof wsActions;
+export const socketMiddleware = (wsActions:TWSActions): Middleware => {
     return (store: MiddlewareAPI) => {
         let socket: WebSocket | null = null;
 

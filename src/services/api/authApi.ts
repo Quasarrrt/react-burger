@@ -1,87 +1,74 @@
-import {apiUrl, handleResponse} from "./api";
+import {apiUrl} from "./api";
+const handleResponse = (res: Response) => {
+    if (!res.ok) {
+        return Promise.reject(res.status);
+    }
+    return Promise.resolve(res.json()).then((data) => {
+        return data;
+    });
+};
 
 class AuthApi {
-    private serverUrl: string;
-    constructor({ serverUrl}:{serverUrl:string}) {
-        this.serverUrl = serverUrl;
+    _headers: {};
+    _serverUrl: string;
+
+    constructor({ serverUrl, headers }: { serverUrl: string; headers: {} }) {
+        this._headers = headers;
+        this._serverUrl = serverUrl;
     }
 
-    register(email:string, password:string, name:string) {
-        return fetch(`${this.serverUrl}/auth/register`, {
+    register(email: string, password: string, name: string) {
+        return fetch(`${this._serverUrl}/auth/register`, {
             method: 'POST',
-            headers: {
-                Authorization: '',
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
+            headers: this._headers,
             body: JSON.stringify({ email, password, name }),
         }).then(handleResponse);
     }
 
-    login(email:string, password:string) {
-        return fetch(`${this.serverUrl}/auth/login`, {
+    login(email: string, password: string) {
+        return fetch(`${this._serverUrl}/auth/login`, {
             method: 'POST',
-            headers: {
-                Authorization: '',
-                Accept: 'application/json',
-                'Content-Type': 'application/json',},
+            headers: this._headers,
             body: JSON.stringify({ email, password }),
         }).then(handleResponse);
     }
 
-    forgotPassword(email:string) {
-        return fetch(`${this.serverUrl}/password-reset`, {
+    forgotPassword(email: string) {
+        return fetch(`${this._serverUrl}/password-reset`, {
             method: 'POST',
-            headers:{
-                Authorization: '',
-                Accept: 'application/json',
-                'Content-Type': 'application/json',},
+            headers: this._headers,
             body: JSON.stringify({ email }),
         }).then(handleResponse);
     }
 
-    resetPassword(password:string, token:string) {
-        return fetch(`${this.serverUrl}/password-reset/reset`, {
+    resetPassword(password: string, token: string) {
+        return fetch(`${this._serverUrl}/password-reset/reset`, {
             method: 'POST',
-            headers: {
-                Authorization: '',
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
+            headers: this._headers,
             body: JSON.stringify({ password, token }),
         }).then(handleResponse);
     }
 
-    logout(token:string) {
-        return fetch(`${this.serverUrl}/auth/logout`, {
+    logout(token: string) {
+        return fetch(`${this._serverUrl}/auth/logout`, {
             method: 'POST',
-            headers:{
-                Authorization: '',
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
+            headers: this._headers,
             body: JSON.stringify({ token }),
         }).then(handleResponse);
     }
 
-    refreshToken(token:string) {
-        return fetch(`${this.serverUrl}/auth/token`, {
+    refreshToken(token: string) {
+        return fetch(`${this._serverUrl}/auth/token`, {
             method: 'POST',
-            headers: {
-                Authorization: '',
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
+            headers: this._headers,
             body: JSON.stringify({ token }),
         }).then(handleResponse);
     }
 
-    getUserInfo(token:string) {
-        return fetch(`${this.serverUrl}/auth/user`, {
+    getUserInfo(token: string) {
+        return fetch(`${this._serverUrl}/auth/user`, {
             method: 'GET',
-            headers: { Authorization: `Bearer ${token}`,
-                Accept: 'application/json',
-                'Content-Type': 'application/json', },
+            headers: { ...this._headers, Authorization: `Bearer ${token}` },
         })
             .then((res) => {
                 return res.json();
@@ -91,13 +78,10 @@ class AuthApi {
             });
     }
 
-    updateUserInfo(token:string, name:string, email:string, password:string) {
-        return fetch(`${this.serverUrl}/auth/user`, {
+    updateUserInfo(token: string, name: string, email: string, password: string) {
+        return fetch(`${this._serverUrl}/auth/user`, {
             method: 'PATCH',
-            headers:
-                { Authorization: `Bearer ${token}`,
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json', },
+            headers: { ...this._headers, Authorization: `Bearer ${token}` },
             body: JSON.stringify({
                 name: name,
                 email: email,
@@ -115,5 +99,11 @@ class AuthApi {
 
 const authApi = new AuthApi({
     serverUrl: apiUrl,
+    headers: {
+        Authorization: '',
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+    },
 });
+
 export default authApi;

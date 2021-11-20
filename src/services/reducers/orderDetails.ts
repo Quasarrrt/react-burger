@@ -1,12 +1,12 @@
 import { SET_ORDER_DETAILS, CLEAR_ORDER_DETAILS, TOrderDetailsActions } from '../types/orderDetails';
-import {TOrder} from "../types/ws";
+
 
 export type TOrderDetailsState = {
-    orderDetails:TOrder;
+    orderDetails: null;
 }
 
 const orderDetailsInitialState: TOrderDetailsState = {
-    orderDetails:{} as TOrder,
+    orderDetails:null,
 };
 
 export const orderDetailsReducer = (state = orderDetailsInitialState, action: TOrderDetailsActions,) => {
@@ -14,7 +14,7 @@ export const orderDetailsReducer = (state = orderDetailsInitialState, action: TO
         case SET_ORDER_DETAILS: {
             return {
                 ...state,
-                orderDetails: action.payload,
+                orderDetails: action.order,
             };
         }
         case CLEAR_ORDER_DETAILS: {

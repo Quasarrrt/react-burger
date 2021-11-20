@@ -8,7 +8,7 @@ export const CLEAR_ORDER_DETAILS:'CLEAR_ORDER_DETAILS' = 'CLEAR_ORDER_DETAILS';
 
 export interface ISetOrderDetails {
     readonly type: typeof SET_ORDER_DETAILS;
-    readonly payload: TOrder;
+    order: TOrder;
 }
 
 export interface IClearOrderDetails {

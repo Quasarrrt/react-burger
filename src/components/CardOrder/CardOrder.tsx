@@ -4,16 +4,15 @@ import Price from '../Price/Price';
 import { formatDateFromISOStringToLocaleString } from '../../utils/utils';
 import cardOrderstyles from './CardOrder.module.css';
 import {TOrder} from "../../services/types/ws";
-import {TItem, TLocationState} from "../../services/types/otherTypes";
-import {ADD_VIEWED_INGREDIENT_DATA} from "../../services/types/viewedIngredient";
-import {setOrderDetails} from "../../services/actions/orderDetails";
+import {TItem} from "../../services/types/otherTypes";
+
 interface ICardOrder {
     order: TOrder;
     onCardOrderClick: (order: TOrder) => void;
 }
 
 const CardOrder: React.FC<ICardOrder> = ({ order, onCardOrderClick }) => {
-    const location = useLocation<TLocationState>();
+    const location = useLocation();
     const {allIngredients}:{ allIngredients: TItem[] }  = useSelector((state) => state.allIngredients,
     );
     const date = formatDateFromISOStringToLocaleString(order.createdAt);
@@ -21,24 +20,22 @@ const CardOrder: React.FC<ICardOrder> = ({ order, onCardOrderClick }) => {
 
 
     const handleClick = () => {
-        setOrderDetails(order);
        onCardOrderClick(order);
-        return false;
+
     };
 
 
-
     return (
-        <li className={`${cardOrderstyles.cardOrder} p-6`} >
+        <li className={`${cardOrderstyles.cardOrder} p-6`}  onClick={handleClick} >
 
             <Link
                 className={cardOrderstyles.link}
                 to={{
-                    pathname: `/profile/orders/${order._id}`,
+                    pathname: `${location.pathname}/${order._id}`,
                     state: { backgroundOrders: location },
 
                 }}
-                onClick={handleClick}
+
             >
 
                 <div className={cardOrderstyles.idWithDateContainer}>
