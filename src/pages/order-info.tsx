@@ -16,7 +16,7 @@ export const OrderInfoPage: React.FC = () => {
     }, [dispatch]);
 
     const { ordersData } = useSelector((state) => state.ordersData);
-    console.log("Данные заказов", ordersData)
+   // console.log("Данные заказов", ordersData)
     return (
         <div className={styles.orderInfo}>
 

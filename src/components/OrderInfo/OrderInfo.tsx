@@ -19,7 +19,7 @@ const OrderInfo: React.FC<IOrderInfo> = ({ ordersData, orderDetailsData, id }) =
         ? orderDetailsData
         : ordersData.orders.filter((item)=>item._id===id)[0];
 
-   console.log('Заказ orderInfo', orderInfo)
+   //console.log('Заказ orderInfo', orderInfo)
 
     const formatDateFromISOStringToLocaleString = (ISOString: string) => {
         const dateInMs = Date.parse(ISOString);

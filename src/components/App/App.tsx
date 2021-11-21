@@ -26,7 +26,7 @@ import {TOrder} from "../../services/types/ws";
 import {setOrderDetails} from "../../services/actions/orderDetails";
 import OrderInfo from "../OrderInfo/OrderInfo";
 import {useSelector} from "../../services/hooks";
-import {getOrdersData} from "../../services/actions/ordersData";
+//import {getOrdersData} from "../../services/actions/ordersData";
 import {ProfileOrderPage} from "../../pages/profile-order";
 function App() {
 
@@ -58,9 +58,9 @@ function App() {
         setIsOpen(true);
     };
 
-    React.useEffect(() => {
+    /*React.useEffect(() => {
         dispatch(getOrdersData());
-    }, [dispatch]);
+    }, [dispatch]);*/
 
     const handleCloseModal = React.useCallback(
         (isGoBack) => {

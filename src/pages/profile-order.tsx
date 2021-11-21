@@ -14,12 +14,12 @@ export const ProfileOrderPage: React.FC = () => {
 
     React.useEffect(() => {
         const token=localStorage.getItem('token');
-       console.log('Token user', token)
+      //console.log('Token user', token)
         dispatch(getUserInfo(token));
         dispatch(getUserOrdersData(token));
     }, [dispatch]);
 
-    console.log(userOrdersData);
+    //console.log(userOrdersData);
     return (
         <div className={styles.orderInfo}>
             {userOrdersData ? (

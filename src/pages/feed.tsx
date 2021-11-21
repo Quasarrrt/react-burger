@@ -15,7 +15,7 @@ const OrderFeedPage: React.FC<IOrderFeedPage> = ({ onCardOrderClick }) => {
     const dispatch = useDispatch();
     const { ordersData, wsConnected }:{ordersData: TOrders, wsConnected: boolean} = useSelector((state) => state.webSocket);
 
-    console.log(ordersData);
+    //console.log(ordersData);
     React.useEffect(() => {
         dispatch({ type: wsActions.wsStart, wsUrl: WS_ALL_ORDERS_URL });
         return () => {

@@ -9,9 +9,10 @@ import BurgerConstructorItems from "../BurgerConstructorItems/BurgerConstructorI
 import {useMemo} from "react";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
-import {getAccessTokenFromCookie, getRefreshTokenFromCookie} from "../../services/cookieFunctions";
+import { getRefreshTokenFromCookie} from "../../services/cookieFunctions";
 import { History } from 'history';
 import {TItem} from "../../services/types/otherTypes";
+
 
 interface IBurgerConstructor {
     history : History
@@ -35,8 +36,8 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({history}) => {
         </Modal>
     )
     const orderSend=()=>{
-
-        const token = getAccessTokenFromCookie();
+        const token=localStorage.getItem('token');
+        //console.log('Token user', token)
         if (loginSuccess || isRefreshToken) {
             if(isBun!==null){
                 if (isBun._id) {
