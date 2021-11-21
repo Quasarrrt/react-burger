@@ -1,18 +1,20 @@
 import React, {useEffect} from "react";
 import profileStyles from './profile.module.css';
-import {NavLink, useHistory} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import { useHistory} from "react-router-dom";
+import {useSelector, useDispatch} from "../services/hooks";
 import {getAccessTokenFromCookie, getRefreshTokenFromCookie, setCookie} from "../services/cookieFunctions";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {getUserInfo, logout, updateUserInfo} from "../services/actions/auth";
+import ProfileNavigationMenu from "../components/ProfileNavigationMenu/ProfileNavigationMenu";
 
-interface IUserInfo {
-    name: string;
-    email: string,
-    password: string,
+
+export interface IUserInfo{
+    name: string,
+    email:  string,
+    password:  string,
 }
 
- const ProfilePage = () => {
+ const ProfilePage  = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [userInfo, setUserInfo] = React.useState<IUserInfo>({
@@ -28,7 +30,7 @@ interface IUserInfo {
         setIsUserInfoChanged(false);
     };
 
-    const handleLogout = () => {
+     const handleLogout = () => {
         const token = getRefreshTokenFromCookie();
         dispatch(logout(token));
         setCookie({
@@ -48,11 +50,12 @@ interface IUserInfo {
         setIsUserInfoChanged(true);
     };
 
-    const { logoutSuccess } = useSelector((state:any) => state.auth);
-    const { user } = useSelector((state:any) => state.auth);
+    const { logoutSuccess } = useSelector((state) => state.auth);
+    const { user } = useSelector((state) => state.auth);
 
     useEffect(() => {
         const token = getAccessTokenFromCookie();
+        console.error(token);
         dispatch(getUserInfo(token));
     }, [dispatch]);
 
@@ -69,37 +72,34 @@ interface IUserInfo {
             history.push('/login');
         }
     }, [logoutSuccess, history]);
+     const nameRef = React.useRef<HTMLInputElement>(null);
+     const emailRef = React.useRef<HTMLInputElement>(null);
+     const passwordRef = React.useRef<HTMLInputElement>(null);
 
+     const handleIconClick = (ref: React.RefObject<HTMLInputElement>) => {
+         ref.current!.classList.remove('input__textfield-disabled');
+         ref.current!.disabled = false;
+         ref.current!.focus();
+     };
+
+     const handleNameIconClick = () => {
+         handleIconClick(nameRef);
+     };
+
+     const handleEmailIconClick = () => {
+         handleIconClick(emailRef);
+     };
+
+     const handlePasswordIconClick = () => {
+         handleIconClick(passwordRef);
+     };
     return (
         <section className={profileStyles.section}>
-            <div className={profileStyles.linkContainer}>
-                <NavLink
-                    to={'/profile'}
-                    exact={true}
-                    className={`${profileStyles.link} text text_type_main-medium text_color_inactive`}
-                    activeClassName={profileStyles.linkActive}
-                >
-                    Профиль
-                </NavLink>
-                <NavLink
-                    to={'/profile/orders'}
-                    exact={true}
-                    className={`${profileStyles.link} text text_type_main-medium text_color_inactive`}
-                    activeClassName={profileStyles.linkActive}
-                >
-                    История заказов
-                </NavLink>
-                <button
-                    className={`${profileStyles.button} text text_type_main-medium text_color_inactive`}
-                    onClick={handleLogout}
-                >
-                    Выход
-                </button>
-                <p className={`${profileStyles.paragraph} text text_type_main-default text_color_inactive mt-20`}>
-                    В этом разделе вы можете изменить свои персональные данные
-                </p>
-            </div>
-            <form className={profileStyles.form}>
+            <ProfileNavigationMenu
+                handleLogout={handleLogout}
+                menuText={'В этом разделе вы можете изменить свои персональные данные'}
+            />
+            <form className={`${profileStyles.form} mt-30`}>
                 <div className={profileStyles.formContainer}>
                     <Input
                         value={userInfo.name}
@@ -110,6 +110,8 @@ interface IUserInfo {
                         size={'default'}
                         icon={'EditIcon'}
                         disabled={true}
+                        ref={nameRef}
+                        onIconClick={handleNameIconClick}
 
                     />
                     <Input
@@ -121,6 +123,8 @@ interface IUserInfo {
                         size={'default'}
                         icon={'EditIcon'}
                         disabled={true}
+                        ref={emailRef}
+                        onIconClick={handleEmailIconClick}
 
                     />
                     <Input
@@ -132,6 +136,8 @@ interface IUserInfo {
                         size={'default'}
                         icon={'EditIcon'}
                         disabled={true}
+                        ref={passwordRef}
+                        onIconClick={handlePasswordIconClick}
 
                     />
                     {isUserInfoChanged && (

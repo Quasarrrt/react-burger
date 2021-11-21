@@ -1,17 +1,18 @@
 import React from 'react';
 import stylesOrderDetails from './OrderDetails.module.css'
 import doneImage from '../../images/done.svg'
-import {useSelector} from "react-redux";
+import {useSelector} from "../../services/hooks";
 
 
 const OrderDetails = () => {
-    const orderNum = useSelector((store:any) => store.order.order.number);
-
+    const orderNumber = useSelector((store) => store.order.orderNumber);
     return (
         <div className={stylesOrderDetails.orderWrapper}>
-            <div className={["mt-4 mb-8 text text_type_digits-large",stylesOrderDetails.orderNum].join('  ')}>
-                 { orderNum }
-            </div>
+
+                    <div className={["mt-4 mb-8 text text_type_digits-large",stylesOrderDetails.orderNum].join('  ')}>
+                        { orderNumber }
+                    </div>
+
             <p className={["mb-15 text text_type_main-medium", stylesOrderDetails.order].join('  ')}>
                 идентификатор заказа
             </p>

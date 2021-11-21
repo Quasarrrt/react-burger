@@ -1,8 +1,6 @@
 import { NavLink } from 'react-router-dom';
-
-import PropTypes from 'prop-types';
-
 import styles from './NavigationLink.module.css';
+import React from "react";
 interface INavigationLink {
     path:string;
     text:string;

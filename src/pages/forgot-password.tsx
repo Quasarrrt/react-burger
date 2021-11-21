@@ -3,10 +3,10 @@ import styles from "./forgot-password.module.css"
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import {Link, Redirect,  useLocation} from 'react-router-dom';
 import {forgotPassword} from '../services/actions/auth';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector, useDispatch} from "../services/hooks";
 import {getRefreshTokenFromCookie} from "../services/cookieFunctions";
 import {useState} from "react";
-import {TLocationState} from "../services/types/types";
+import {TLocationState} from "../services/types/otherTypes";
 
 
  const  ForgotPasswordPage = () => {
@@ -19,7 +19,7 @@ import {TLocationState} from "../services/types/types";
         dispatch(forgotPassword(email));
         setEmail('');
     };
-    const { forgotPasswordSuccess } = useSelector((state:any) => state.auth);
+    const { forgotPasswordSuccess } = useSelector((state) => state.auth);
 
     const isLogin = !!getRefreshTokenFromCookie();
 

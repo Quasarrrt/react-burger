@@ -1,25 +1,23 @@
 import React from 'react';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import cardStyles  from './Card.module.css'
-import {cardPropTypes} from "../../propTypes/propTypes";
-import PropTypes from "prop-types";
-import {useDispatch, useSelector} from "react-redux";
-import {ADD_VIEWED_INGREDIENT_DATA} from "../../services/actions/viewedIngredient";
-import {DragSourceMonitor, useDrag} from "react-dnd";
+
+import {useDispatch, useSelector} from "../../services/hooks";
+
+import {ADD_VIEWED_INGREDIENT_DATA} from "../../services/types/viewedIngredient";
+import { useDrag} from "react-dnd";
 import {Link, useLocation} from "react-router-dom";
-import {IItem} from "../../services/types/types";
+import {TItem} from "../../services/types/otherTypes";
 interface ICard {
-    card:IItem;
-    onCardClick: (card:IItem)=>void;
+    card:TItem;
+    onCardClick: (card:TItem)=>void;
 }
 
 const Card : React.FC<ICard> =  ({card, onCardClick}) => {
     const dispatch=useDispatch();
-    const  {constructorIngredients, isBun}=useSelector((state:any)=>({
-        constructorIngredients: state.constructorIngredients.constructorIngredients,
-        isBun: state.constructorIngredients.isBun,
-    }))
-    const [{isDrag}, dragRef] = useDrag({
+    const { constructorIngredients, isBun } :{ constructorIngredients: TItem[], isBun: TItem } = useSelector((state) => (
+        state.constructorIngredients));
+    const [, dragRef] = useDrag({
         type: 'item',
         item: card,
         collect: (monitor) => ({
@@ -33,10 +31,10 @@ const Card : React.FC<ICard> =  ({card, onCardClick}) => {
         });
         onCardClick(card);
         return false;
-    };
+    }
 
     const count = card.type === 'bun' && isBun?._id === card._id ? 2 : card.type !== 'bun' ? constructorIngredients.filter(
-            (item: { _id: string|undefined; })=> item._id === card._id).length
+            (item)=> item._id === card._id).length
         : 0;
 
     const location = useLocation();

@@ -1,27 +1,23 @@
 import {ConstructorElement, DragIcon,} from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import {useDispatch} from "../../services/hooks";
 import {DropTargetMonitor, useDrag, useDrop} from "react-dnd";
 import { useRef, FC } from "react";
-import { MOVE_CONSTRUCTOR_INGREDIENTS, DELETE_CONSTRUCTOR_INGREDIENTS} from "../../services/actions/constructorIngredients";
-import {cardPropTypes} from "../../propTypes/propTypes";
+import {MOVE_CONSTRUCTOR_INGREDIENTS} from '../../services/types/contructorIngredients'
 import constructorItemStyles from './BurgerConstructorItem.module.css'
-import {IItem} from "../../services/types/types";
+import {TItem} from "../../services/types/otherTypes";
+import {deleteConstructorIngredients} from "../../services/actions/constructorIngredients";
 
 interface IBurgerConstructorItem {
     type?: "top" | "bottom" ,
     index: number,
-    burger: IItem,
+    burger: TItem,
     locked?: boolean,
 }
 const BurgerConstructorItem: FC<IBurgerConstructorItem>=({ type, burger, index, locked })=>{
 
     const dispatch = useDispatch();
     function handleClose() {
-        dispatch({
-            type: DELETE_CONSTRUCTOR_INGREDIENTS,
-            index: index,
-        });
+        dispatch(deleteConstructorIngredients(index));
     }
     const dropRef = useRef<HTMLDivElement>(null);
     const [{ handlerId }, drop] = useDrop({
@@ -60,7 +56,7 @@ const BurgerConstructorItem: FC<IBurgerConstructorItem>=({ type, burger, index, 
             item.index = hoverIndex;
         },
     });
-    const [{ isDragging }, drag] = useDrag({
+    const [, drag] = useDrag({
         type: "ingredients",
         item: () => {
             return { burger, index };
@@ -78,9 +74,9 @@ const BurgerConstructorItem: FC<IBurgerConstructorItem>=({ type, burger, index, 
 
             <ConstructorElement
 
-                text={burger.type !== "bun"? burger?.name: type==="top"? burger?.name+" (верх)":burger?.name+" (низ)"}
-                price={burger?.price}
-                thumbnail={burger?.image}
+                text={(burger.type !== "bun"? burger?.name: type==="top"? burger?.name+" (верх)":burger?.name+" (низ)")!}
+                price={burger?.price!}
+                thumbnail={burger?.image!}
                 type={type}
                 isLocked={locked}
                 handleClose={handleClose}

@@ -1,15 +1,12 @@
-import {getOrder} from "../api/api";
+import  {getOrder} from "../api/api";
+import {GET_ORDER_REQUEST, GET_ORDER_SUCCESS, SET_ORDER_ERROR} from "../types/order";
+import {AppDispatch, AppThunk} from "../store";
 
-export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';
-export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
-export const SET_ORDER_ERROR='SET_ORDER_ERROR';
-
-export const getOrderNum=(orderItems, openOrder) => {
-    return function(dispatch) {
+export const getOrderNum: AppThunk =(orderItems: string[], token: string) =>  (dispatch: AppDispatch)=>{
         dispatch({
             type: GET_ORDER_REQUEST,
         });
-        getOrder(orderItems)
+        getOrder(orderItems, token)
             .then(res => {
                 if (res.ok) {
                     return res.json();
@@ -20,9 +17,8 @@ export const getOrderNum=(orderItems, openOrder) => {
                 if (res && res.success) {
                     dispatch({
                         type: GET_ORDER_SUCCESS,
-                        number: res.order.number,
+                        orderNumber: res.order.number,
                     });
-                    openOrder(true);
 
                 } else {
                     dispatch({
@@ -36,4 +32,3 @@ export const getOrderNum=(orderItems, openOrder) => {
                 });
             });
     };
-}

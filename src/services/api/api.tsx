@@ -1,135 +1,65 @@
-const api = 'https://norma.nomoreparties.space/api';
-const headers= { 'Content-Type': 'application/json'};
-export const ingredientsRequest = async () => {
-    return await fetch(`${api}/ingredients`)
-};
-export const getOrder = async (orderItems:string[]) => {
-    return await fetch(`${api}/orders`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({ ingredients:orderItems })
-    });
-};
+export const apiUrl = 'https://norma.nomoreparties.space/api';
+export const WS_ALL_ORDERS_URL = 'wss://norma.nomoreparties.space/orders/all';
+export const WS_USER_ORDERS_URL = 'wss://norma.nomoreparties.space/orders';
 
 export const handleResponse=(res: Response) =>{
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-class AuthApi {
-    private serverUrl: string;
-    constructor({ serverUrl}:{serverUrl:string}) {
-        this.serverUrl = serverUrl;
+export const ingredientsRequest = async () => {
+    return await fetch(`${apiUrl}/ingredients`)
+};
+export const getOrder = async (orderItems:string[], token: string) => {
+    return await fetch(`${apiUrl}/orders`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ingredients:orderItems })
+    });
+};
+
+
+
+
+class Api {
+    _headers: {};
+    _serverUrl: string;
+
+    constructor({ serverUrl, headers }: { serverUrl: string; headers: {} }) {
+        this._headers = headers;
+        this._serverUrl = serverUrl;
     }
 
-    register(email:string, password:string, name:string) {
-        return fetch(`${this.serverUrl}/auth/register`, {
-            method: 'POST',
-            headers: {
-                Authorization: '',
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password, name }),
-        }).then(handleResponse);
-    }
-
-    login(email:string, password:string) {
-        return fetch(`${this.serverUrl}/auth/login`, {
-            method: 'POST',
-            headers: {
-                Authorization: '',
-                Accept: 'application/json',
-                'Content-Type': 'application/json',},
-            body: JSON.stringify({ email, password }),
-        }).then(handleResponse);
-    }
-
-    forgotPassword(email:string) {
-        return fetch(`${this.serverUrl}/password-reset`, {
-            method: 'POST',
-            headers:{
-                Authorization: '',
-                Accept: 'application/json',
-                'Content-Type': 'application/json',},
-            body: JSON.stringify({ email }),
-        }).then(handleResponse);
-    }
-
-    resetPassword(password:string, token:string) {
-        return fetch(`${this.serverUrl}/password-reset/reset`, {
-            method: 'POST',
-            headers: {
-                Authorization: '',
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ password, token }),
-        }).then(handleResponse);
-    }
-
-    logout(token:string) {
-        return fetch(`${this.serverUrl}/auth/logout`, {
-            method: 'POST',
-            headers:{
-                Authorization: '',
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ token }),
-        }).then(handleResponse);
-    }
-
-    refreshToken(token:string) {
-        return fetch(`${this.serverUrl}/auth/token`, {
-            method: 'POST',
-            headers: {
-                Authorization: '',
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ token }),
-        }).then(handleResponse);
-    }
-
-    getUserInfo(token:string) {
-        return fetch(`${this.serverUrl}/auth/user`, {
+    getOrdersData() {
+        return fetch(`${this._serverUrl}/orders/all`, {
             method: 'GET',
-            headers: { Authorization: `Bearer ${token}`,
-                Accept: 'application/json',
-                'Content-Type': 'application/json', },
-        })
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                return data;
-            });
+            headers: this._headers,
+        }).then(handleResponse);
     }
 
-    updateUserInfo(token:string, name:string, email:string, password:string) {
-        return fetch(`${this.serverUrl}/auth/user`, {
-            method: 'PATCH',
-            headers:
-                { Authorization: `Bearer ${token}`,
-                Accept: 'application/json',
-                'Content-Type': 'application/json', },
-            body: JSON.stringify({
-                name: name,
-                email: email,
-                password: password,
-            }),
-        })
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                return data;
-            });
+    getUserOrdersData(token: string) {
+        return fetch(`${this._serverUrl}/orders`, {
+            method: 'GET',
+            headers: { ...this._headers, Authorization: `Bearer ${token}` },
+        }).then(handleResponse);
     }
+
+
 }
 
-const authApi = new AuthApi({
-    serverUrl: api,
+const api = new Api({
+    serverUrl: apiUrl,
+    headers: {
+        Authorization: '',
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+    },
 });
 
-export default authApi;
+
+
+
+
+export default api;

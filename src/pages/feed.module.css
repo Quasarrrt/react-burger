@@ -1,0 +1,38 @@
+.orderFeed {
+    width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+.stats {
+    width: 580px;
+}
+
+.readyWithInProgressContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.numberOfOrders {
+    text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25), 0px 0px 8px rgba(51, 51, 255, 0.25),
+    0px 4px 32px rgba(51, 51, 255, 0.5);
+}
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(2, 136px);
+    row-gap: 8px;
+    list-style: none;
+    padding: 0;
+    height: 120px;
+    overflow: hidden;
+}
+
+.ordersContainer {
+    margin: 0;
+}

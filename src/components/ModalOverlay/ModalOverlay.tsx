@@ -1,6 +1,5 @@
 import React from 'react';
 import stylesModalOverlay from './ModalOverlay.module.css'
-import PropTypes from "prop-types";
 
 interface IModalOverlay {
     onClose: () => void;

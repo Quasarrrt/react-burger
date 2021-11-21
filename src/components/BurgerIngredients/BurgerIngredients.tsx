@@ -1,11 +1,10 @@
-import React, {useEffect, useMemo, FC} from 'react';
+import React, {useEffect,  FC} from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerIngredientsStyles from './BurgerIngredients.module.css'
 import Card from "../Card/Card";
-import PropTypes from "prop-types";
-import {useSelector} from "react-redux";
+import {useSelector} from "../../services/hooks";
 import { useInView } from 'react-intersection-observer';
-import {IItem} from "../../services/types/types";
+import {TItem} from "../../services/types/otherTypes";
 
 
 interface IBurgerIngredients {
@@ -13,11 +12,7 @@ interface IBurgerIngredients {
 }
 const BurgerIngredients: FC<IBurgerIngredients> = ({onCardClick}) => {
     const [current, setCurrent] = React.useState<string>('one')
-    const {  allIngredients,constructorIngredients, isBun } = useSelector((state:any) => ({
-        allIngredients: state.allIngredients.allIngredients,
-        constructorIngredients: state.constructorIngredients.constructorIngredients,
-        isBun: state.constructorIngredients.isBun,
-    }));
+    const {  allIngredients }:{ allIngredients: TItem[] } = useSelector((state) => (state.allIngredients));
 
     const [bunRef, inViewBuns] = useInView({ threshold: 0 });
     const [sauceRef, inViewSauces] = useInView({ threshold: 0 });
@@ -38,13 +33,13 @@ const BurgerIngredients: FC<IBurgerIngredients> = ({onCardClick}) => {
         const item = document.getElementById(tab);
         if (item) item.scrollIntoView({ behavior: "smooth" });
     };
-    const bun = allIngredients.filter((item:IItem) => {
+    const bun = allIngredients.filter((item:TItem) => {
         return item.type === "bun";
     });
-    const sauce = allIngredients.filter((item:IItem) => {
+    const sauce = allIngredients.filter((item:TItem) => {
         return item.type === "sauce";
     });
-    const main = allIngredients.filter((item:IItem) => {
+    const main = allIngredients.filter((item:TItem) => {
         return item.type === "main";
     });
 
@@ -74,7 +69,7 @@ const BurgerIngredients: FC<IBurgerIngredients> = ({onCardClick}) => {
                         Булки
                         </p>
                         <div className={burgerIngredientsStyles.cards}>
-                        {bun&&bun.map((card:IItem) => {
+                        {bun&&bun.map((card:TItem) => {
                             return <Card card={card} key={card._id}  onCardClick={onCardClick}   />
                         }
                         )}
@@ -85,7 +80,7 @@ const BurgerIngredients: FC<IBurgerIngredients> = ({onCardClick}) => {
                         Соусы
                         </p>
                         <div className={burgerIngredientsStyles.cards}>
-                        {sauce.map((card:IItem) => {
+                        {sauce.map((card:TItem) => {
                             return <Card card={card} key={card._id} onCardClick={onCardClick}/>
                             }
                         )}
@@ -96,7 +91,7 @@ const BurgerIngredients: FC<IBurgerIngredients> = ({onCardClick}) => {
                         Начинки
                         </p>
                         <div className={burgerIngredientsStyles.cards}>
-                        {main.map((card:IItem) => {
+                        {main.map((card:TItem) => {
                             return <Card card={card} key={card._id}  onCardClick={onCardClick}/>
                         }
                     )}
