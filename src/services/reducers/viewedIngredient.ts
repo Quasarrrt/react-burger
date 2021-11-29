@@ -1,13 +1,13 @@
 import {ADD_VIEWED_INGREDIENT_DATA, REMOVE_VIEWED_INGREDIENT_DATA} from "../types/viewedIngredient";
-
+import {TItem} from "../types/otherTypes";
 import {TViewedIngredientActions} from "../types/viewedIngredient";
 
 export type TViewedIngredientState = {
-    currentIngredient: null,
+    currentIngredient: TItem,
 }
 
 export const initialStateViewedIngredient: TViewedIngredientState = {
-    currentIngredient:null ,
+    currentIngredient: {} as TItem,
 };
 export const viewedIngredientReducer = (state = initialStateViewedIngredient, action: TViewedIngredientActions) => {
     switch (action.type) {
@@ -21,7 +21,7 @@ export const viewedIngredientReducer = (state = initialStateViewedIngredient, ac
         case REMOVE_VIEWED_INGREDIENT_DATA: {
             return {
                 ...state,
-                currentIngredient: null,
+                currentIngredient: initialStateViewedIngredient.currentIngredient,
             };
         }
         default: {

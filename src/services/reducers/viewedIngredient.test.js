@@ -2,7 +2,7 @@ import {viewedIngredientReducer} from "./viewedIngredient"
 import {ADD_VIEWED_INGREDIENT_DATA, REMOVE_VIEWED_INGREDIENT_DATA} from "../types/viewedIngredient";
 
 const testViewedIngredientInitialState = {
-    currentIngredient: null,
+    currentIngredient: {},
 };
 
 const testViewedIngredient = {
@@ -38,7 +38,7 @@ describe('viewedIngredientReducer', () => {
             }),
         ).toEqual(
             expect.objectContaining({
-                currentIngredient: null,
+                currentIngredient: {},
             }),
         );
     });

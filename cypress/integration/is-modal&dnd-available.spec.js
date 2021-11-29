@@ -1,7 +1,9 @@
 describe('service is available', function () {
-    before('should be available on localhost:3000', function() {
+    it('should be available on localhost:3000', function() {
         cy.visit('http://localhost:3000');
     });
+
+
     it("should drag and drop bun", function () {
         cy.get('[class^=BurgerIngredients_cards__]').as("burger-ingredients");
         cy.get('[class^=BurgerConstructorItems_ul__]').as("burger-constructor");
@@ -52,7 +54,7 @@ describe('service is available', function () {
 
 
     it("should submit an order", function () {
-        cy.get('[class^=BurgerConstructor_totalWrapper__1sKpw]').as("burger-constructor");
+        cy.get('[class^=BurgerConstructor_totalWrapper__]').as("burger-constructor");
 
         cy.get('@burger-constructor')
             .find("button")

@@ -5,7 +5,7 @@ export const REMOVE_VIEWED_INGREDIENT_DATA:"REMOVE_VIEWED_INGREDIENT_DATA" ="REM
 
 export interface IAddViewedIngredientAction {
     readonly type: typeof ADD_VIEWED_INGREDIENT_DATA;
-    payload: TItem;
+    readonly payload: TItem;
 }
 
 export interface IDeleteViewedIngredientAction {

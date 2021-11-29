@@ -1,3 +1,9 @@
+## О проекте
+Космическая бургерная
+
+## Использованные технологии
+React, Redux, TypeScript, React DnD, React Router и Redux Thunk, Web Socket, а так же код покрыт тестами при помощи библиотеки Jest и фреймворка Cypress
+
 ## Адрес приложения
 https://reactburger.students.nomoredomains.rocks/
 
