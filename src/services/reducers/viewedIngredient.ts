@@ -3,13 +3,13 @@ import {TItem} from "../types/otherTypes";
 import {TViewedIngredientActions} from "../types/viewedIngredient";
 
 export type TViewedIngredientState = {
-    currentIngredient: TItem;
+    currentIngredient: TItem,
 }
 
 export const initialStateViewedIngredient: TViewedIngredientState = {
     currentIngredient: {} as TItem,
 };
-export const viewedIngredientReducer = (state = initialStateViewedIngredient, action: TViewedIngredientActions) :TViewedIngredientState => {
+export const viewedIngredientReducer = (state = initialStateViewedIngredient, action: TViewedIngredientActions) => {
     switch (action.type) {
 
         case ADD_VIEWED_INGREDIENT_DATA: {

@@ -83,7 +83,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({history}) => {
         <>
             <section className={["pt-25 pl-4 pr-4", constructorStyles.items].join(' ')}>
                 <BurgerConstructorItems/>
-                <div className={["pt-10", constructorStyles.totalWrapper].join(' ')}>
+                <div className={[ constructorStyles.totalWrapper, "pt-10"].join(' ')}>
                     <div className={["pr-10", constructorStyles.totalPrice].join(' ')}>
                         <p className="text text_type_digits-medium">
                             {totalPrice ||0}

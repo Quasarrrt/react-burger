@@ -55,7 +55,6 @@ export interface IUserInfo{
 
     useEffect(() => {
         const token = getAccessTokenFromCookie();
-        console.error(token);
         dispatch(getUserInfo(token));
     }, [dispatch]);
 
